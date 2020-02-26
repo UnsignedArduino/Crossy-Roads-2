@@ -1,0 +1,17 @@
+{
+    "name": "Crossy Roads 2",
+    "dependencies": {
+        "device": "*",
+        "animation": "*"
+    },
+    "description": "",
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md"
+    ],
+    "preferredEditor": "blocksprj",
+    "testFiles": [
+        "test.ts"
+    ]
+}
