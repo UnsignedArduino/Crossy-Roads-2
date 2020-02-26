@@ -31,21 +31,23 @@ Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 let ChickenX = 4
 let ChickenY = 13
 let DeadTimeout = 20
-// +----------------------+
-// | Tilemap Key          |
-// +----------------------+
-// |Key  |Value           |
-// +----------------------+
-// |0    |Nothing         |
-// |1    |Water           |
-// |2    |Water + Lilypad |
-// |3    |Grass           |
-// |4    |Grass + Pollen  |
-// |5    |Grass + Pollen*2|
-// |6    |Grass + Flowers |
-// |7    |Tree            |
-// |8    |Road            |
-// |9    |Railroad        |
+// +------------------------+
+// | Tilemap Key            |
+// +------------------------+
+// |Key  |Value             |
+// +------------------------+
+// |0    |Nothing (Reserved)|
+// |1    |Water             |
+// |2    |Water + Lilypad   |
+// |3    |Grass             |
+// |4    |Grass + Pollen    |
+// |5    |Grass + Pollen*2  |
+// |6    |Grass + Flowers   |
+// |7    |Tree              |
+// |8    |Road              |
+// |9    |Railroad          |
+// |10   |Railroad Light Off|
+// |11   |Railroad Light On |
 let tilemap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
