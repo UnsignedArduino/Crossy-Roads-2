@@ -7,6 +7,7 @@ enum ActionKind {
     Idle,
     Jumping
 }
+let Dead = 0
 let Chicken = sprites.create(img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
@@ -29,8 +30,15 @@ Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 let ChickenX = 4
 let ChickenY = 13
-let Dead = 0
 let DeadTimeout = 20
+let Row0 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let Row1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let Row2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let Row3 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let Row4 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let Row5 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let Row6 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let Row7 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 scene.setBackgroundColor(7)
 info.setScore(0)
 let ChickenFowardAnim = animation.createAnimation(ActionKind.Foward, 100)
