@@ -29,7 +29,6 @@ Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 let ChickenX = 4
 let ChickenY = 13
-let Timeout = 50
 let Dead = 0
 let DeadTimeout = 20
 scene.setBackgroundColor(7)
