@@ -48,6 +48,7 @@ let DeadTimeout = 20
 // |9    |Railroad          |
 // |10   |Railroad Light Off|
 // |11   |Railroad Light On |
+// +-----+------------------+
 let tilemap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
