@@ -1,4 +1,7 @@
-// Setup code
+// +-------------------------+
+// | Setup code              |
+// +-------------------------+
+// Animation definitions
 enum ActionKind {
     Foward,
     Backward,
@@ -8,7 +11,9 @@ enum ActionKind {
     Idle,
     Jumping
 }
+// If chicken has died, Dead is 1
 let Dead = 0
+// The chicken
 let Chicken = sprites.create(img`
     . . . . . . . 2 2 . . . . . . .
     . . . . . 1 1 2 2 1 1 . . . . .
@@ -27,10 +32,14 @@ let Chicken = sprites.create(img`
     . . . . . . 4 . . 4 . . . . . .
     . . . . . 4 4 4 4 4 4 . . . . .
 `, SpriteKind.Player)
+// Keep the chicken in screen
 Chicken.setFlag(SpriteFlag.StayInScreen, true)
+// Don't show the physics of the chicken
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
+// X and Y of the chicken in the tilemap
 let ChickenX = 4
 let ChickenY = 13
+// Starts counting down 10 every second, when 0, game over screen shows
 let DeadTimeout = 20
 // +-------------------------+
 // | Tilemap Key             |
@@ -50,6 +59,7 @@ let DeadTimeout = 20
 // |10   |Railroad Light Off |
 // |11   |Railroad Light On  |
 // +-----+-------------------+
+// Tilemap repesentation in array
 let tilemap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
