@@ -143,7 +143,9 @@ ChickenLeftAnim.addAnimationFrame(img`
 `)
 // Attaches `ChickenLeftAnim` to `Chicken`
 animation.attachAnimation(Chicken, ChickenLeftAnim)
+// Variable holding the right animation of the chicken
 let ChickenRightAnim = animation.createAnimation(ActionKind.Right, 100)
+// Assigns `LeftFlipped` to the same image as the `ChickenLeftAnim`
 let LeftFlipped = img`
     . . . . . . . . . . . . . . . .
     . . . . 2 2 . . . . . . . . . .
@@ -162,7 +164,11 @@ let LeftFlipped = img`
     . . . . . . . . . 4 . . . . . .
     . . . . . . . . 4 4 4 . . . . .
 `
+// Flips `LeftFlipped` horrizontally
 LeftFlipped.flipX()
+// Adds `LeftFlipped` to `ChickenRightAnim`
 ChickenRightAnim.addAnimationFrame(LeftFlipped)
+// Attaches `ChickenRightAnim` to `Chicken`
 animation.attachAnimation(Chicken, ChickenRightAnim)
+// Starts `Foward` animation of the chicken
 animation.setAction(Chicken, ActionKind.Foward)
