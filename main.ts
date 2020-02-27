@@ -7,6 +7,13 @@ enum ActionKind {
     Idle,
     Jumping
 }
+function update_tilemap () {
+    for (let Row = 0; Row <= 7; Row++) {
+        for (let Column = 0; Column <= 9; Column++) {
+        	
+        }
+    }
+}
 let Dead = 0
 let Chicken = sprites.create(img`
 . . . . . . . 2 2 . . . . . . . 
