@@ -11,9 +11,9 @@ enum ActionKind {
     Idle,
     Jumping
 }
-// If chicken has died, Dead is 1
+// If chicken has died, `Dead` is 1
 let Dead = 0
-// The chicken
+// The chicken sprite
 let Chicken = sprites.create(img`
     . . . . . . . 2 2 . . . . . . .
     . . . . . 1 1 2 2 1 1 . . . . .
@@ -70,9 +70,13 @@ let tilemap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
+// Sets the background color to green - makes up for clear pixels in tiles
 scene.setBackgroundColor(7)
+// Score set to 0
 info.setScore(0)
+// Variable holding the foward animation of the chicken
 let ChickenFowardAnim = animation.createAnimation(ActionKind.Foward, 100)
+// Adds foward animation to `ChickenFowardAnim`
 ChickenFowardAnim.addAnimationFrame(img`
     . . . . . . . 2 2 . . . . . . .
     . . . . . 1 1 2 2 1 1 . . . . .
@@ -91,8 +95,11 @@ ChickenFowardAnim.addAnimationFrame(img`
     . . . . . . 4 . . 4 . . . . . .
     . . . . . 4 4 4 4 4 4 . . . . .
 `)
+// Attaches `ChickenFowardAnim` to `Chicken`
 animation.attachAnimation(Chicken, ChickenFowardAnim)
+// Wariable holding the backward animation of the chicken
 let ChickenBackwardAnim = animation.createAnimation(ActionKind.Backward, 100)
+// Adds backward animation to `ChickenBackwardAnim`
 ChickenBackwardAnim.addAnimationFrame(img`
     . . . . . . . 2 2 . . . . . . .
     . . . . . 1 1 2 2 1 1 . . . . .
@@ -111,8 +118,11 @@ ChickenBackwardAnim.addAnimationFrame(img`
     . . . . . . 4 . . 4 . . . . . .
     . . . . . 4 4 4 4 4 4 . . . . .
 `)
+// Attaches `ChickenBackwardAnim` to `Chicken`
 animation.attachAnimation(Chicken, ChickenBackwardAnim)
+// Variable holding the left animation of the chicken
 let ChickenLeftAnim = animation.createAnimation(ActionKind.Left, 100)
+// Adds left animation to `ChickenLeftAnim`
 ChickenLeftAnim.addAnimationFrame(img`
     . . . . . . . . . . . . . . . .
     . . . . 2 2 . . . . . . . . . .
@@ -131,6 +141,7 @@ ChickenLeftAnim.addAnimationFrame(img`
     . . . . . . . . . 4 . . . . . .
     . . . . . . . . 4 4 4 . . . . .
 `)
+// Attaches `ChickenLeftAnim` to `Chicken`
 animation.attachAnimation(Chicken, ChickenLeftAnim)
 let ChickenRightAnim = animation.createAnimation(ActionKind.Right, 100)
 let LeftFlipped = img`
