@@ -8,13 +8,15 @@ enum ActionKind {
     Jumping
 }
 function update_tilemap () {
+    Tile = 0
     for (let Row = 0; Row <= 7; Row++) {
         for (let Column = 0; Column <= 9; Column++) {
-        	
+            Tile = Tilemap[Row][Column]
         }
     }
 }
-let Dead = 0
+let Tile = 0
+let Tilemap: number[][] = []
 let Chicken = sprites.create(img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
@@ -37,8 +39,9 @@ Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 let ChickenX = 4
 let ChickenY = 13
+let Dead = 0
 let DeadTimeout = 20
-let Tilemap = [[0], [0], [0], [0], [0], [0], [0], [0]]
+Tilemap = [[0], [0], [0], [0], [0], [0], [0], [0]]
 for (let List of Tilemap) {
     for (let index = 0; index < 9; index++) {
         List.push(0)
