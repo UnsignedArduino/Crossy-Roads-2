@@ -180,6 +180,7 @@ function update_tilemap () {
     }
 }
 let Tile = 0
+let List: number[] = []
 let Tilemap: number[][] = []
 let Chicken = sprites.create(img`
 . . . . . . . 2 2 . . . . . . . 
@@ -212,6 +213,12 @@ for (let index = 0; index < 7; index++) {
 for (let List of Tilemap) {
     for (let index = 0; index < 9; index++) {
         List.push(0)
+    }
+}
+for (let Index = 0; Index <= 2; Index++) {
+    List = Tilemap[Index + 5]
+    for (let IndexII = 0; IndexII <= 9; IndexII++) {
+        List[IndexII] = 5
     }
 }
 info.setScore(0)
