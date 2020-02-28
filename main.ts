@@ -519,8 +519,12 @@ game.onUpdateInterval(100, function () {
     if (ChickenY < 3) {
         ChickenY += 1
         tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-        for (let Index = 0; Index <= 5; Index++) {
-            Tilemap[6 - Index] = Tilemap[5 - Index]
+        Tilemap.reverse()
+        Tilemap.push([1])
+        Tilemap.reverse()
+        List = Tilemap[0]
+        for (let index = 0; index < 9; index++) {
+            List.push(1)
         }
         Value = Math.randomRange(1, 2)
         if (Value == 1) {
