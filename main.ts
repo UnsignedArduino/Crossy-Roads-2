@@ -142,6 +142,10 @@ e 7 d d e e d d f 2 f d e e d d
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
 }
+function set_tile (X: number, Y: number, TileNum: number) {
+    List = Tilemap[X]
+    List[Y] = TileNum
+}
 function update_tilemap () {
     Tile = 0
     for (let Row = 0; Row <= 7; Row++) {
@@ -237,8 +241,7 @@ for (let index = 0; index < Math.randomRange(1, 4); index++) {
     Column = Math.randomRange(0, 9)
     Tile = Tilemap[Row][Column]
     if (Tile == 1) {
-        List = Tilemap[Row]
-        List[Column] = 2
+        set_tile(Row, Column, 2)
     }
 }
 for (let index = 0; index < Math.randomRange(1, 4); index++) {
@@ -246,8 +249,7 @@ for (let index = 0; index < Math.randomRange(1, 4); index++) {
     Column = Math.randomRange(0, 9)
     Tile = Tilemap[Row][Column]
     if (Tile == 1) {
-        List = Tilemap[Row]
-        List[Column] = 3
+        set_tile(Row, Column, 3)
     }
 }
 for (let index = 0; index < Math.randomRange(1, 4); index++) {
@@ -255,8 +257,7 @@ for (let index = 0; index < Math.randomRange(1, 4); index++) {
     Column = Math.randomRange(0, 9)
     Tile = Tilemap[Row][Column]
     if (Tile == 1) {
-        List = Tilemap[Row]
-        List[Column] = 4
+        set_tile(Row, Column, 4)
     }
 }
 info.setScore(0)
