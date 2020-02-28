@@ -286,7 +286,7 @@ Chicken = sprites.create(img`
 Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 ChickenX = 4
-ChickenY = 3
+ChickenY = 4
 let DeadTimeout = 20
 Dead = 0
 Tilemap = [[1]]
