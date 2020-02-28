@@ -180,6 +180,8 @@ function update_tilemap () {
     }
 }
 let Tile = 0
+let Column = 0
+let Row = 0
 let List: number[] = []
 let Tilemap: number[][] = []
 let Chicken = sprites.create(img`
@@ -206,13 +208,13 @@ let ChickenX = 4
 let ChickenY = 13
 let DeadTimeout = 20
 let Dead = 0
-Tilemap = [[0]]
+Tilemap = [[1]]
 for (let index = 0; index < 7; index++) {
-    Tilemap.push([0])
+    Tilemap.push([1])
 }
 for (let List of Tilemap) {
     for (let index = 0; index < 9; index++) {
-        List.push(0)
+        List.push(1)
     }
 }
 for (let Index = 0; Index <= 2; Index++) {
@@ -230,9 +232,31 @@ for (let Index = 0; Index <= 2; Index++) {
         List[IndexII + 8] = 5
     }
 }
-for (let Index = 0; Index <= 2; Index++) {
-    for (let index = 0; index < Math.randomRange(0, 3); index++) {
-    	
+for (let index = 0; index < Math.randomRange(1, 4); index++) {
+    Row = Math.randomRange(0, 7)
+    Column = Math.randomRange(0, 9)
+    Tile = Tilemap[Row][Column]
+    if (Tile == 1) {
+        List = Tilemap[Row]
+        List[Column] = 2
+    }
+}
+for (let index = 0; index < Math.randomRange(1, 4); index++) {
+    Row = Math.randomRange(0, 7)
+    Column = Math.randomRange(0, 9)
+    Tile = Tilemap[Row][Column]
+    if (Tile == 1) {
+        List = Tilemap[Row]
+        List[Column] = 3
+    }
+}
+for (let index = 0; index < Math.randomRange(1, 4); index++) {
+    Row = Math.randomRange(0, 7)
+    Column = Math.randomRange(0, 9)
+    Tile = Tilemap[Row][Column]
+    if (Tile == 1) {
+        List = Tilemap[Row]
+        List[Column] = 4
     }
 }
 info.setScore(0)
