@@ -221,6 +221,20 @@ for (let Index = 0; Index <= 2; Index++) {
         List[IndexII] = 5
     }
 }
+for (let Index = 0; Index <= 2; Index++) {
+    List = Tilemap[Index + 2]
+    for (let IndexII = 0; IndexII <= 1; IndexII++) {
+        List[IndexII] = 5
+    }
+    for (let IndexII = 0; IndexII <= 1; IndexII++) {
+        List[IndexII + 8] = 5
+    }
+}
+for (let Index = 0; Index <= 2; Index++) {
+    for (let index = 0; index < Math.randomRange(0, 3); index++) {
+    	
+    }
+}
 info.setScore(0)
 scene.setBackgroundColor(7)
 tiles.setTilemap(tiles.createTilemap(
