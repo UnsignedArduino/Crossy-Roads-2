@@ -174,7 +174,7 @@ function update_tilemap () {
             } else if (Tile == 12) {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile7)
             } else {
-                control.panic(100)
+                control.panic(200)
             }
         }
     }
@@ -213,6 +213,10 @@ for (let List of Tilemap) {
     for (let index = 0; index < 9; index++) {
         List.push(0)
     }
+}
+let Value = Tilemap[5]
+for (let Index = 0; Index <= 9; Index++) {
+    Value[Index] = 5
 }
 info.setScore(0)
 scene.setBackgroundColor(7)
