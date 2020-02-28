@@ -158,12 +158,36 @@ function make_terrain (X: number) {
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += -1
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+    animation.setAction(Chicken, ActionKind.Left)
+    if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
+        ChickenX += 1
+    } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
+        ChickenX += 1
+    }
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenY += 1
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+    animation.setAction(Chicken, ActionKind.Backward)
+    if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
+        ChickenY += -1
+    } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
+        ChickenY += -1
+    }
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += 1
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+    animation.setAction(Chicken, ActionKind.Right)
+    if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
+        ChickenX += -1
+    } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
+        ChickenX += -1
+    }
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
 function set_tile (X: number, Y: number, TileNum: number) {
     List = Tilemap[X]
@@ -171,6 +195,14 @@ function set_tile (X: number, Y: number, TileNum: number) {
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenY += -1
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+    animation.setAction(Chicken, ActionKind.Foward)
+    if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
+        ChickenY += 1
+    } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
+        ChickenY += 1
+    }
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
 function make_road (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
@@ -219,7 +251,10 @@ let Column = 0
 let Row = 0
 let List: number[] = []
 let Tilemap: number[][] = []
-let Chicken = sprites.create(img`
+let ChickenY = 0
+let ChickenX = 0
+let Chicken: Sprite = null
+Chicken = sprites.create(img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
 . . . . . 1 1 1 1 1 1 . . . . . 
@@ -239,8 +274,8 @@ let Chicken = sprites.create(img`
 `, SpriteKind.Player)
 Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
-let ChickenX = 4
-let ChickenY = 3
+ChickenX = 4
+ChickenY = 3
 let DeadTimeout = 20
 let Dead = 0
 Tilemap = [[1]]
@@ -397,3 +432,18 @@ ChickenRightAnim.addAnimationFrame(LeftFlipped)
 animation.attachAnimation(Chicken, ChickenRightAnim)
 animation.setAction(Chicken, ActionKind.Foward)
 update_tilemap()
+tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+game.onUpdate(function () {
+    if (ChickenX < 0) {
+        ChickenX = 0
+    }
+    if (ChickenX > 9) {
+        ChickenX = 9
+    }
+    if (ChickenY < 0) {
+        ChickenY = 0
+    }
+    if (ChickenY > 7) {
+        ChickenY = 7
+    }
+})
