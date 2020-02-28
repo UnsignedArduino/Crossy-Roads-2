@@ -260,6 +260,9 @@ for (let index = 0; index < Math.randomRange(1, 4); index++) {
         set_tile(Row, Column, 4)
     }
 }
+set_tile(3, 7, 5)
+set_tile(2, 3, 5)
+set_tile(2, 5, 6)
 info.setScore(0)
 scene.setBackgroundColor(7)
 tiles.setTilemap(tiles.createTilemap(
