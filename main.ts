@@ -12,6 +12,11 @@ function update_tilemap () {
     for (let Row = 0; Row <= 7; Row++) {
         for (let Column = 0; Column <= 9; Column++) {
             Tile = Tilemap[Row][Column]
+            for (let Value = 0; Value <= 11; Value++) {
+                if (Tile == Value) {
+                    break;
+                }
+            }
         }
     }
 }
@@ -39,8 +44,8 @@ Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 let ChickenX = 4
 let ChickenY = 13
-let Dead = 0
 let DeadTimeout = 20
+let Dead = 0
 Tilemap = [[0]]
 for (let index = 0; index < 7; index++) {
     Tilemap.push([0])
