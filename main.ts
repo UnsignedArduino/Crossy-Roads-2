@@ -142,6 +142,25 @@ e 7 d d e e d d f 2 f d e e d d
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
 }
+function make_road (X: number) {
+    for (let Index = 0; Index <= 9; Index++) {
+        set_tile(X, Index, 9)
+    }
+}
+function make_terrain (X: number) {
+    for (let Index = 0; Index <= 9; Index++) {
+        set_tile(X, Index, 1)
+    }
+    set_tile(X, 0, 5)
+    set_tile(X, 9, 5)
+    set_tile(X, Math.randomRange(1, 8), 5)
+    set_tile(X, Math.randomRange(1, 8), 6)
+    for (let Index = 0; Index <= 2; Index++) {
+        if (Math.percentChance(50)) {
+            set_tile(X, Math.randomRange(1, 8), Index + 2)
+        }
+    }
+}
 function set_tile (X: number, Y: number, TileNum: number) {
     List = Tilemap[X]
     List[Y] = TileNum
@@ -263,6 +282,8 @@ for (let index = 0; index < Math.randomRange(1, 4); index++) {
 set_tile(3, 7, 5)
 set_tile(2, 3, 5)
 set_tile(2, 5, 6)
+make_road(1)
+make_terrain(0)
 info.setScore(0)
 scene.setBackgroundColor(7)
 tiles.setTilemap(tiles.createTilemap(
