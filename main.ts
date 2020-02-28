@@ -516,6 +516,20 @@ game.onUpdateInterval(100, function () {
         tiles.placeOnRandomTile(Car, sprites.vehicle.roadHorizontal)
         Car.x = 0
     }
+    if (ChickenY < 3) {
+        ChickenY += 1
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+        for (let Index = 0; Index <= 5; Index++) {
+            Tilemap[6 - Index] = Tilemap[5 - Index]
+        }
+        Value = Math.randomRange(1, 2)
+        if (Value == 1) {
+            make_road(0)
+        } else {
+            make_terrain(0)
+        }
+        update_tilemap()
+    }
     if (Dead) {
         if (DeadTimeout > 0) {
             DeadTimeout += -1
