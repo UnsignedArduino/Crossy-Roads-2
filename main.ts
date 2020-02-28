@@ -41,7 +41,10 @@ let ChickenX = 4
 let ChickenY = 13
 let Dead = 0
 let DeadTimeout = 20
-Tilemap = [[0], [0], [0], [0], [0], [0], [0], [0]]
+Tilemap = [[0]]
+for (let index = 0; index < 7; index++) {
+    Tilemap.push([0])
+}
 for (let List of Tilemap) {
     for (let index = 0; index < 9; index++) {
         List.push(0)
