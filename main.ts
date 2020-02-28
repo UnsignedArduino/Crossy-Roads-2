@@ -142,11 +142,6 @@ e 7 d d e e d d f 2 f d e e d d
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
 }
-function make_road (X: number) {
-    for (let Index = 0; Index <= 9; Index++) {
-        set_tile(X, Index, 9)
-    }
-}
 function make_terrain (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
         set_tile(X, Index, 1)
@@ -161,9 +156,26 @@ function make_terrain (X: number) {
         }
     }
 }
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    ChickenX += -1
+})
+controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+    ChickenY += 1
+})
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    ChickenX += 1
+})
 function set_tile (X: number, Y: number, TileNum: number) {
     List = Tilemap[X]
     List[Y] = TileNum
+}
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    ChickenY += -1
+})
+function make_road (X: number) {
+    for (let Index = 0; Index <= 9; Index++) {
+        set_tile(X, Index, 9)
+    }
 }
 function update_tilemap () {
     Tile = 0
@@ -228,7 +240,7 @@ let Chicken = sprites.create(img`
 Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 let ChickenX = 4
-let ChickenY = 13
+let ChickenY = 3
 let DeadTimeout = 20
 let Dead = 0
 Tilemap = [[1]]
