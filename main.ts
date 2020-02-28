@@ -186,6 +186,9 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Projectile, function (sprite
     sprite.destroy(effects.fire, 100)
     otherSprite.destroy(effects.fire, 100)
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprite.follow(otherSprite, 2000)
+})
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += 1
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
@@ -211,6 +214,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         ChickenY += 1
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+    Timeout = 100
 })
 function make_road (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
@@ -254,6 +258,7 @@ function update_tilemap () {
         }
     }
 }
+let Eagle: Sprite = null
 let Car: Sprite = null
 let Value = 0
 let Tile = 0
@@ -262,6 +267,7 @@ let Row = 0
 let List: number[] = []
 let Tilemap: number[][] = []
 let Dead = 0
+let Timeout = 0
 let ChickenY = 0
 let ChickenX = 0
 let Chicken: Sprite = null
@@ -287,6 +293,7 @@ Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 ChickenX = 4
 ChickenY = 4
+Timeout = 100
 let DeadTimeout = 20
 Dead = 0
 Tilemap = [[1]]
@@ -505,6 +512,7 @@ game.onUpdateInterval(100, function () {
 . . . . . . . . . . . . . . . . 
 `, 50, 0)
         }
+        Car.setFlag(SpriteFlag.DestroyOnWall, true)
         tiles.placeOnRandomTile(Car, sprites.vehicle.roadHorizontal)
         Car.x = 0
     }
@@ -514,6 +522,36 @@ game.onUpdateInterval(100, function () {
         } else {
             game.over(false, effects.melt)
         }
+    }
+    if (Timeout > 0) {
+        Timeout += -1
+    } else {
+        Timeout = 100
+        Dead = 1
+        Eagle = sprites.create(img`
+. . . . . . . e e e e e . . . . . . . . 
+. . . . . . . e e e e e . . . . . . . . 
+. . . . . . . e e e e e . . . . . . . . 
+. . . . . . . e e e e e . . . . . . . . 
+. . . . . . . e e e e e . . . . . . . . 
+. . . . . . . e e e e e . . . . . . . . 
+e e e e e e e e e e e e e e e e e e e . 
+e e e e e e e e e e e e e e e e e e e . 
+e e e e e e e e e e e e e e e e e e e . 
+. . . . . . . e e e e e . . . . . . . . 
+. . . . . . . e e e e e . . . . . . . . 
+. . . . . . . e e e e e . . . . . . . . 
+. . . . . . . e e e e e . . . . . . . . 
+. . . . . . . 1 1 1 1 1 . . . . . . . . 
+. . . . . . . 1 f 1 f 1 . . . . . . . . 
+. . . . . . . 1 1 1 1 1 . . . . . . . . 
+. . . . . . . 1 1 4 1 1 . . . . . . . . 
+. . . . . . . . . 4 . . . . . . . . . . 
+`, SpriteKind.Enemy)
+        Eagle.setPosition(Chicken.x, 0)
+        Eagle.setVelocity(0, 200)
+        Chicken.setFlag(SpriteFlag.DestroyOnWall, true)
+        Eagle.setFlag(SpriteFlag.DestroyOnWall, true)
     }
 })
 game.onUpdate(function () {
