@@ -178,6 +178,14 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
+    sprite.destroy(effects.spray, 100)
+    Dead = 1
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Projectile, function (sprite, otherSprite) {
+    sprite.destroy(effects.fire, 100)
+    otherSprite.destroy(effects.fire, 100)
+})
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += 1
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
@@ -246,11 +254,14 @@ function update_tilemap () {
         }
     }
 }
+let Car: Sprite = null
+let Value = 0
 let Tile = 0
 let Column = 0
 let Row = 0
 let List: number[] = []
 let Tilemap: number[][] = []
+let Dead = 0
 let ChickenY = 0
 let ChickenX = 0
 let Chicken: Sprite = null
@@ -277,7 +288,7 @@ Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 ChickenX = 4
 ChickenY = 3
 let DeadTimeout = 20
-let Dead = 0
+Dead = 0
 Tilemap = [[1]]
 for (let index = 0; index < 7; index++) {
     Tilemap.push([1])
@@ -433,6 +444,78 @@ animation.attachAnimation(Chicken, ChickenRightAnim)
 animation.setAction(Chicken, ActionKind.Foward)
 update_tilemap()
 tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+game.onUpdateInterval(100, function () {
+    if (Math.percentChance(25)) {
+        Value = Math.randomRange(1, 3)
+        if (Value == 1) {
+            Car = sprites.createProjectileFromSide(img`
+. . . . . . . . . . . . . . . . 
+. . . . 2 2 2 2 2 2 2 2 . . . . 
+. . . 2 4 2 2 2 2 2 2 c 2 . . . 
+. . 2 c 4 2 2 2 2 2 2 c c 2 . . 
+. 2 c c 4 4 4 4 4 4 2 c c 4 2 d 
+. 2 c 2 e e e e e e e b c 4 2 2 
+. 2 2 e b b e b b b e e b 4 2 2 
+. 2 e b b b e b b b b e 2 2 2 2 
+. e e 2 2 2 e 2 2 2 2 2 e 2 2 2 
+. e e e e e e f e e e f e 2 d d 
+. e e e e e e f e e f e e e 2 d 
+. e e e e e e f f f e e e e e e 
+. e f f f f e e e e f f f e e e 
+. . f f f f f e e f f f f f e . 
+. . . f f f . . . . f f f f . . 
+. . . . . . . . . . . . . . . . 
+`, 50, 0)
+        } else if (Value == 2) {
+            Car = sprites.createProjectileFromSide(img`
+. . . . . . . . . . . . . . . . 
+. . . . 6 6 6 6 6 6 6 6 . . . . 
+. . . 6 9 6 6 6 6 6 6 c 6 . . . 
+. . 6 c 9 6 6 6 6 6 6 c c 6 . . 
+. 6 c c 9 9 9 9 9 9 6 c c 9 6 d 
+. 6 c 6 8 8 8 8 8 8 8 b c 9 6 6 
+. 6 6 8 b b 8 b b b 8 8 b 9 6 6 
+. 6 8 b b b 8 b b b b 8 6 6 6 6 
+. 8 8 6 6 6 8 6 6 6 6 6 8 6 6 6 
+. 8 8 8 8 8 8 f 8 8 8 f 8 6 d d 
+. 8 8 8 8 8 8 f 8 8 f 8 8 8 6 d 
+. 8 8 8 8 8 8 f f f 8 8 8 8 8 8 
+. 8 f f f f 8 8 8 8 f f f 8 8 8 
+. . f f f f f 8 8 f f f f f 8 . 
+. . . f f f . . . . f f f f . . 
+. . . . . . . . . . . . . . . . 
+`, 50, 0)
+        } else {
+            Car = sprites.createProjectileFromSide(img`
+. . . . . . . . . . . . . . . . 
+. . . . 3 3 3 3 3 3 3 3 . . . . 
+. . . 3 d 3 3 3 3 3 3 c 3 . . . 
+. . 3 c d 3 3 3 3 3 3 c c 3 . . 
+. 3 c c d d d d d d 3 c c d 3 d 
+. 3 c 3 a a a a a a a b c d 3 3 
+. 3 3 a b b a b b b a a b d 3 3 
+. 3 a b b b a b b b b a 3 3 3 3 
+. a a 3 3 3 a 3 3 3 3 3 a 3 3 3 
+. a a a a a a f a a a f a 3 d d 
+. a a a a a a f a a f a a a 3 d 
+. a a a a a a f f f a a a a a a 
+. a f f f f a a a a f f f a a a 
+. . f f f f f a a f f f f f a . 
+. . . f f f . . . . f f f f . . 
+. . . . . . . . . . . . . . . . 
+`, 50, 0)
+        }
+        tiles.placeOnRandomTile(Car, sprites.vehicle.roadHorizontal)
+        Car.x = 0
+    }
+    if (Dead) {
+        if (DeadTimeout > 0) {
+            DeadTimeout += -1
+        } else {
+            game.over(false, effects.melt)
+        }
+    }
+})
 game.onUpdate(function () {
     if (ChickenX < 0) {
         ChickenX = 0
