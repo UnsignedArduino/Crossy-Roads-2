@@ -156,6 +156,9 @@ function make_terrain (X: number) {
         }
     }
 }
+scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass1, function (sprite, location) {
+    sprite.destroy()
+})
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += -1
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
@@ -178,9 +181,27 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
+scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.rock0, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile5, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile3, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass3, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile7, function (sprite, location) {
+    sprite.destroy()
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
     sprite.destroy(effects.spray, 100)
     Dead = 1
+})
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile6, function (sprite, location) {
+    sprite.destroy()
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Projectile, function (sprite, otherSprite) {
     sprite.destroy(effects.fire, 100)
@@ -200,10 +221,16 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile4, function (sprite, location) {
+    sprite.destroy()
+})
 function set_tile (X: number, Y: number, TileNum: number) {
     List = Tilemap[X]
     List[Y] = TileNum
 }
+scene.onOverlapTile(SpriteKind.Projectile, sprites.builtin.forestTiles0, function (sprite, location) {
+    sprite.destroy()
+})
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenY += -1
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
@@ -259,6 +286,9 @@ function update_tilemap () {
     }
 }
 scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile2, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass2, function (sprite, location) {
     sprite.destroy()
 })
 let Eagle: Sprite = null
