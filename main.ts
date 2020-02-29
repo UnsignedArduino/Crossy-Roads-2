@@ -258,6 +258,9 @@ function update_tilemap () {
         }
     }
 }
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile2, function (sprite, location) {
+    sprite.destroy()
+})
 let Eagle: Sprite = null
 let Car: Sprite = null
 let Value = 0
