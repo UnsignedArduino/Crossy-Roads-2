@@ -145,14 +145,25 @@ e 7 d d e e d d f 2 f d e e d d
 sprites.onCreated(SpriteKind.Projectile, function (sprite) {
     Projectiles.push(sprite)
 })
+function make_lilypad_river (X: number) {
+    for (let Index = 0; Index <= 9; Index++) {
+        set_tile(X, Index, 7)
+    }
+    for (let index = 0; index < Math.randomRange(3, 8); index++) {
+        set_tile(X, Math.randomRange(1, 8), 8)
+    }
+}
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += -1
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     animation.setAction(Chicken, ActionKind.Left)
     if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenX += 1
+        ChickenY += 1
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenX += 1
+        ChickenY += 1
+    } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
+        Chicken.destroy(effects.fountain, 100)
+        Dead = 1
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
@@ -161,9 +172,12 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     animation.setAction(Chicken, ActionKind.Backward)
     if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenY += -1
+        ChickenY += 1
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenY += -1
+        ChickenY += 1
+    } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
+        Chicken.destroy(effects.fountain, 100)
+        Dead = 1
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
@@ -227,9 +241,12 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     animation.setAction(Chicken, ActionKind.Right)
     if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenX += -1
+        ChickenY += 1
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenX += -1
+        ChickenY += 1
+    } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
+        Chicken.destroy(effects.fountain, 100)
+        Dead = 1
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
@@ -246,6 +263,9 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         ChickenY += 1
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
         ChickenY += 1
+    } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
+        Chicken.destroy(effects.fountain, 100)
+        Dead = 1
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     Timeout = 100
@@ -265,6 +285,8 @@ function make_terrain (X: number) {
     }
 }
 let Eagle: Sprite = null
+let SelectedTile = 0
+let LastTile = 0
 let Car: Sprite = null
 let Value = 0
 let Dump: Sprite = null
@@ -538,11 +560,19 @@ game.onUpdateInterval(100, function () {
         for (let Value of Projectiles) {
             Value.y += 16
         }
-        Value = Math.randomRange(1, 2)
-        if (Value == 1) {
+        LastTile = SelectedTile
+        SelectedTile = Math.randomRange(1, 3)
+        if (LastTile == 3) {
+            while (SelectedTile == 3) {
+                SelectedTile = Math.randomRange(1, 3)
+            }
+        }
+        if (SelectedTile == 1) {
             make_road(0)
-        } else {
+        } else if (SelectedTile == 2) {
             make_terrain(0)
+        } else {
+            make_lilypad_river(0)
         }
         info.changeScoreBy(1)
         update_tilemap()
