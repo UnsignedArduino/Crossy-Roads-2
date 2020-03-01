@@ -142,66 +142,6 @@ e 7 d d e e d d f 2 f d e e d d
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
 }
-function update_tilemap () {
-    Tile = 0
-    for (let Row = 0; Row <= 7; Row++) {
-        for (let Column = 0; Column <= 9; Column++) {
-            Tile = Tilemap[Row][Column]
-            if (Tile == 0) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile0)
-            } else if (Tile == 1) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile2)
-            } else if (Tile == 2) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.castle.tileGrass1)
-            } else if (Tile == 3) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.castle.tileGrass3)
-            } else if (Tile == 4) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.castle.tileGrass2)
-            } else if (Tile == 5) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.builtin.forestTiles0)
-            } else if (Tile == 6) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.castle.rock0)
-            } else if (Tile == 7) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile3)
-            } else if (Tile == 8) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile4)
-            } else if (Tile == 9) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.vehicle.roadHorizontal)
-            } else if (Tile == 10) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile5)
-            } else if (Tile == 11) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile6)
-            } else if (Tile == 12) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile7)
-            } else {
-                control.panic(200)
-            }
-        }
-    }
-}
-function make_terrain (X: number) {
-    for (let Index = 0; Index <= 9; Index++) {
-        set_tile(X, Index, 1)
-    }
-    set_tile(X, 0, 5)
-    set_tile(X, 9, 5)
-    set_tile(X, Math.randomRange(1, 8), 5)
-    set_tile(X, Math.randomRange(1, 8), 6)
-    for (let Index2 = 0; Index2 <= 2; Index2++) {
-        if (Math.percentChance(50)) {
-            set_tile(X, Math.randomRange(1, 8), Index2 + 2)
-        }
-    }
-}
-function set_tile (X: number, Y: number, TileNum: number) {
-    List = Tilemap[X]
-    List[Y] = TileNum
-}
-function make_road (X: number) {
-    for (let Index3 = 0; Index3 <= 9; Index3++) {
-        set_tile(X, Index3, 9)
-    }
-}
 scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass1, function (sprite, location) {
     sprite.y += 1
 })
@@ -239,6 +179,10 @@ scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile3, function (sprite, loca
 scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass3, function (sprite, location) {
     sprite.y += 1
 })
+function set_tile (X: number, Y: number, TileNum: number) {
+    List = Tilemap[X]
+    List[Y] = TileNum
+}
 scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile7, function (sprite, location) {
     sprite.y += 1
 })
@@ -253,6 +197,43 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Projectile, function (sprite
     sprite.destroy(effects.fire, 100)
     otherSprite.destroy(effects.fire, 100)
 })
+function update_tilemap () {
+    Tile = 0
+    for (let Row = 0; Row <= 7; Row++) {
+        for (let Column = 0; Column <= 9; Column++) {
+            Tile = Tilemap[Row][Column]
+            if (Tile == 0) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile0)
+            } else if (Tile == 1) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile2)
+            } else if (Tile == 2) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.castle.tileGrass1)
+            } else if (Tile == 3) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.castle.tileGrass3)
+            } else if (Tile == 4) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.castle.tileGrass2)
+            } else if (Tile == 5) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.builtin.forestTiles0)
+            } else if (Tile == 6) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.castle.rock0)
+            } else if (Tile == 7) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile3)
+            } else if (Tile == 8) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile4)
+            } else if (Tile == 9) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.vehicle.roadHorizontal)
+            } else if (Tile == 10) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile5)
+            } else if (Tile == 11) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile6)
+            } else if (Tile == 12) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile7)
+            } else {
+                control.panic(200)
+            }
+        }
+    }
+}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprite.follow(otherSprite, 2000)
 })
@@ -273,6 +254,11 @@ scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile4, function (sprite, loca
 scene.onOverlapTile(SpriteKind.Projectile, sprites.builtin.forestTiles0, function (sprite, location) {
     sprite.y += 1
 })
+function make_road (X: number) {
+    for (let Index = 0; Index <= 9; Index++) {
+        set_tile(X, Index, 9)
+    }
+}
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenY += -1
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
@@ -291,12 +277,26 @@ scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile2, function (sprite, loca
 scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass2, function (sprite, location) {
     sprite.y += 1
 })
+function make_terrain (X: number) {
+    for (let Index = 0; Index <= 9; Index++) {
+        set_tile(X, Index, 1)
+    }
+    set_tile(X, 0, 5)
+    set_tile(X, 9, 5)
+    set_tile(X, Math.randomRange(1, 8), 5)
+    set_tile(X, Math.randomRange(1, 8), 6)
+    for (let Index = 0; Index <= 2; Index++) {
+        if (Math.percentChance(50)) {
+            set_tile(X, Math.randomRange(1, 8), Index + 2)
+        }
+    }
+}
 let Eagle: Sprite = null
 let Car: Sprite = null
 let Value = 0
 let Tile = 0
-let Column2 = 0
-let Row2 = 0
+let Column = 0
+let Row = 0
 let List: number[] = []
 let Tilemap: number[][] = []
 let Dead = 0
@@ -333,48 +333,48 @@ Tilemap = [[1]]
 for (let index = 0; index < 7; index++) {
     Tilemap.push([1])
 }
-for (let List2 of Tilemap) {
+for (let List of Tilemap) {
     for (let index = 0; index < 9; index++) {
-        List2.push(1)
+        List.push(1)
     }
 }
-for (let Index4 = 0; Index4 <= 2; Index4++) {
-    List = Tilemap[Index4 + 5]
+for (let Index = 0; Index <= 2; Index++) {
+    List = Tilemap[Index + 5]
     for (let IndexII = 0; IndexII <= 9; IndexII++) {
         List[IndexII] = 5
     }
 }
-for (let Index5 = 0; Index5 <= 2; Index5++) {
-    List = Tilemap[Index5 + 2]
-    for (let IndexII2 = 0; IndexII2 <= 1; IndexII2++) {
-        List[IndexII2] = 5
+for (let Index = 0; Index <= 2; Index++) {
+    List = Tilemap[Index + 2]
+    for (let IndexII = 0; IndexII <= 1; IndexII++) {
+        List[IndexII] = 5
     }
-    for (let IndexII3 = 0; IndexII3 <= 1; IndexII3++) {
-        List[IndexII3 + 8] = 5
-    }
-}
-for (let index = 0; index < Math.randomRange(1, 4); index++) {
-    Row2 = Math.randomRange(0, 7)
-    Column2 = Math.randomRange(0, 9)
-    Tile = Tilemap[Row2][Column2]
-    if (Tile == 1) {
-        set_tile(Row2, Column2, 2)
+    for (let IndexII = 0; IndexII <= 1; IndexII++) {
+        List[IndexII + 8] = 5
     }
 }
 for (let index = 0; index < Math.randomRange(1, 4); index++) {
-    Row2 = Math.randomRange(0, 7)
-    Column2 = Math.randomRange(0, 9)
-    Tile = Tilemap[Row2][Column2]
+    Row = Math.randomRange(0, 7)
+    Column = Math.randomRange(0, 9)
+    Tile = Tilemap[Row][Column]
     if (Tile == 1) {
-        set_tile(Row2, Column2, 3)
+        set_tile(Row, Column, 2)
     }
 }
 for (let index = 0; index < Math.randomRange(1, 4); index++) {
-    Row2 = Math.randomRange(0, 7)
-    Column2 = Math.randomRange(0, 9)
-    Tile = Tilemap[Row2][Column2]
+    Row = Math.randomRange(0, 7)
+    Column = Math.randomRange(0, 9)
+    Tile = Tilemap[Row][Column]
     if (Tile == 1) {
-        set_tile(Row2, Column2, 4)
+        set_tile(Row, Column, 3)
+    }
+}
+for (let index = 0; index < Math.randomRange(1, 4); index++) {
+    Row = Math.randomRange(0, 7)
+    Column = Math.randomRange(0, 9)
+    Tile = Tilemap[Row][Column]
+    if (Tile == 1) {
+        set_tile(Row, Column, 4)
     }
 }
 set_tile(3, 7, 5)
@@ -565,6 +565,7 @@ game.onUpdateInterval(100, function () {
         } else {
             make_terrain(0)
         }
+        info.changeScoreBy(1)
         update_tilemap()
     }
     if (Dead) {

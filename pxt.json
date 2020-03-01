@@ -1,5 +1,5 @@
 {
-    "name": "Crossy Roads 2 v1.0.1",
+    "name": "Crossy Roads 2",
     "dependencies": {
         "device": "*",
         "animation": "*"
