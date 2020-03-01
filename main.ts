@@ -142,9 +142,6 @@ e 7 d d e e d d f 2 f d e e d d
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
 }
-sprites.onCreated(SpriteKind.Projectile, function (sprite) {
-    Projectiles.push(sprite)
-})
 function make_lilypad_river (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
         set_tile(X, Index, 7)
@@ -153,6 +150,9 @@ function make_lilypad_river (X: number) {
         set_tile(X, Math.randomRange(1, 8), 8)
     }
 }
+sprites.onCreated(SpriteKind.Projectile, function (sprite) {
+    Projectiles.push(sprite)
+})
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += -1
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
@@ -482,6 +482,10 @@ animation.attachAnimation(Chicken, ChickenRightAnim)
 animation.setAction(Chicken, ActionKind.Foward)
 update_tilemap()
 tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+game.showLongText("Welcome to Crossy Roads 2!", DialogLayout.Bottom)
+game.showLongText("In this game, you will have to get as far as you can without getting abducted, ran over, or drowning.", DialogLayout.Bottom)
+game.showLongText("Use the joystick/d-pad to move your chicken around.", DialogLayout.Bottom)
+game.showLongText("Have fun!", DialogLayout.Bottom)
 game.onUpdateInterval(100, function () {
     if (Math.percentChance(25)) {
         Value = Math.randomRange(1, 3)
