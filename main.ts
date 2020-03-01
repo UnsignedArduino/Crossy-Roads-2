@@ -142,8 +142,8 @@ e 7 d d e e d d f 2 f d e e d d
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
 }
-scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass1, function (sprite, location) {
-    sprite.y += 1
+sprites.onCreated(SpriteKind.Projectile, function (sprite) {
+    Projectiles.push(sprite)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += -1
@@ -167,31 +167,16 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
-scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.rock0, function (sprite, location) {
-    sprite.y += 1
-})
-scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile5, function (sprite, location) {
-    sprite.y += 1
-})
-scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile3, function (sprite, location) {
-    sprite.y += 1
-})
-scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass3, function (sprite, location) {
-    sprite.y += 1
+sprites.onDestroyed(SpriteKind.Projectile, function (sprite) {
+    Dump = Projectiles.removeAt(Projectiles.indexOf(sprite))
 })
 function set_tile (X: number, Y: number, TileNum: number) {
     List = Tilemap[X]
     List[Y] = TileNum
 }
-scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile7, function (sprite, location) {
-    sprite.y += 1
-})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
     sprite.destroy(effects.spray, 100)
     Dead = 1
-})
-scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile6, function (sprite, location) {
-    sprite.y += 1
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Projectile, function (sprite, otherSprite) {
     sprite.destroy(effects.fire, 100)
@@ -248,12 +233,6 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
-scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile4, function (sprite, location) {
-    sprite.y += 1
-})
-scene.onOverlapTile(SpriteKind.Projectile, sprites.builtin.forestTiles0, function (sprite, location) {
-    sprite.y += 1
-})
 function make_road (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
         set_tile(X, Index, 9)
@@ -270,12 +249,6 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     Timeout = 100
-})
-scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile2, function (sprite, location) {
-    sprite.y += 1
-})
-scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass2, function (sprite, location) {
-    sprite.y += 1
 })
 function make_terrain (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
@@ -294,10 +267,12 @@ function make_terrain (X: number) {
 let Eagle: Sprite = null
 let Car: Sprite = null
 let Value = 0
+let Dump: Sprite = null
 let Tile = 0
 let Column = 0
 let Row = 0
 let List: number[] = []
+let Projectiles: Sprite[] = []
 let Tilemap: number[][] = []
 let Dead = 0
 let Timeout = 0
@@ -330,6 +305,7 @@ Timeout = 100
 let DeadTimeout = 20
 Dead = 0
 Tilemap = [[1]]
+Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 for (let index = 0; index < 7; index++) {
     Tilemap.push([1])
 }
@@ -559,6 +535,9 @@ game.onUpdateInterval(100, function () {
         for (let index = 0; index < 9; index++) {
             List.push(1)
         }
+        for (let Value of Projectiles) {
+            Value.y += 16
+        }
         Value = Math.randomRange(1, 2)
         if (Value == 1) {
             make_road(0)
@@ -605,6 +584,7 @@ e e e e e e e e e e e e e e e e e e e .
         Chicken.setFlag(SpriteFlag.DestroyOnWall, true)
         Eagle.setFlag(SpriteFlag.DestroyOnWall, true)
     }
+    console.log(Projectiles.length)
 })
 game.onUpdate(function () {
     if (ChickenX < 0) {
