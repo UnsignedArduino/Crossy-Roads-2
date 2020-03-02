@@ -141,17 +141,56 @@ e 7 d d e e d d f 2 f d e e d d
 7 7 7 7 7 e e e f f f 7 7 7 e e 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
+    //% blockIdentity=images._tile
+    export const tile8 = img`
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 6 6 6 9 9 9 9 9 9 
+9 9 6 6 6 6 6 6 9 6 6 6 6 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 6 6 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 6 6 6 9 9 9 9 9 9 9 9 9 
+9 6 6 6 9 9 6 6 6 6 9 6 6 6 9 9 
+9 9 9 9 9 9 9 9 9 6 6 6 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+`
 }
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile8, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Food, sprites.vehicle.roadHorizontal, function (sprite, location) {
+    sprite.destroy()
+})
 function make_lilypad_river (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
         set_tile(X, Index, 7)
     }
-    for (let index = 0; index < Math.randomRange(3, 8); index++) {
+    for (let index = 0; index < Math.randomRange(4, 8); index++) {
         set_tile(X, Math.randomRange(1, 8), 8)
     }
 }
 sprites.onCreated(SpriteKind.Projectile, function (sprite) {
     Projectiles.push(sprite)
+})
+scene.onOverlapTile(SpriteKind.Food, myTiles.tile6, function (sprite, location) {
+    sprite.destroy()
+})
+function make_river (X: number) {
+    for (let Index = 0; Index <= 9; Index++) {
+        set_tile(X, Index, 9)
+    }
+}
+scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass1, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Food, sprites.castle.tileGrass3, function (sprite, location) {
+    sprite.destroy()
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += -1
@@ -181,16 +220,40 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
+scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.rock0, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile5, function (sprite, location) {
+    sprite.destroy()
+})
 sprites.onDestroyed(SpriteKind.Projectile, function (sprite) {
     Dump = Projectiles.removeAt(Projectiles.indexOf(sprite))
+})
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile3, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass3, function (sprite, location) {
+    sprite.destroy()
 })
 function set_tile (X: number, Y: number, TileNum: number) {
     List = Tilemap[X]
     List[Y] = TileNum
 }
+scene.onOverlapTile(SpriteKind.Food, sprites.castle.rock0, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile7, function (sprite, location) {
+    sprite.destroy()
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
     sprite.destroy(effects.spray, 100)
     Dead = 1
+})
+scene.onOverlapTile(SpriteKind.Food, myTiles.tile2, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile6, function (sprite, location) {
+    sprite.destroy()
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Projectile, function (sprite, otherSprite) {
     sprite.destroy(effects.fire, 100)
@@ -220,12 +283,14 @@ function update_tilemap () {
             } else if (Tile == 8) {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile4)
             } else if (Tile == 9) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.vehicle.roadHorizontal)
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile8)
             } else if (Tile == 10) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile5)
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.vehicle.roadHorizontal)
             } else if (Tile == 11) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile6)
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile5)
             } else if (Tile == 12) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile6)
+            } else if (Tile == 13) {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile7)
             } else {
                 control.panic(200)
@@ -250,9 +315,24 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile4, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Food, sprites.castle.tileGrass2, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, sprites.builtin.forestTiles0, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Food, myTiles.tile4, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Food, myTiles.tile5, function (sprite, location) {
+    sprite.destroy()
+})
 function make_road (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
-        set_tile(X, Index, 9)
+        set_tile(X, Index, 10)
     }
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -269,6 +349,24 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     Timeout = 100
+})
+scene.onOverlapTile(SpriteKind.Food, myTiles.tile3, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Food, sprites.builtin.forestTiles0, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Food, sprites.castle.tileGrass1, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Food, myTiles.tile7, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile2, function (sprite, location) {
+    sprite.destroy()
+})
+scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass2, function (sprite, location) {
+    sprite.destroy()
 })
 function make_terrain (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
@@ -287,6 +385,7 @@ function make_terrain (X: number) {
 let Eagle: Sprite = null
 let SelectedTile = 0
 let LastTile = 0
+let Log: Sprite = null
 let Car: Sprite = null
 let Value = 0
 let Dump: Sprite = null
@@ -383,7 +482,7 @@ make_terrain(0)
 info.setScore(0)
 scene.setBackgroundColor(7)
 tiles.setTilemap(tiles.createTilemap(
-            hex`0a0008000001040506070802030a090b0c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`,
+            hex`0a0008000001040506070802030d0a090b0c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`,
             img`
 . . . . . . . . . . 
 . . . . . . . . . . 
@@ -394,7 +493,7 @@ tiles.setTilemap(tiles.createTilemap(
 . . . . . . . . . . 
 . . . . . . . . . . 
 `,
-            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,sprites.castle.rock0,myTiles.tile5,sprites.vehicle.roadHorizontal,myTiles.tile6,myTiles.tile7],
+            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,sprites.castle.rock0,myTiles.tile5,sprites.vehicle.roadHorizontal,myTiles.tile6,myTiles.tile7,myTiles.tile8],
             TileScale.Sixteen
         ))
 let ChickenFowardAnim = animation.createAnimation(ActionKind.Foward, 100)
@@ -551,6 +650,30 @@ game.onUpdateInterval(100, function () {
         tiles.placeOnRandomTile(Car, sprites.vehicle.roadHorizontal)
         Car.x = 0
     }
+    if (Math.percentChance(25)) {
+        Log = sprites.createProjectileFromSide(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+e e e e e e e e e e e e e e e e 
+e b b b b b b b b b b b b b b b 
+e e e e e e e b b b e e e e e e 
+b b b e e e e e e e e e b b b e 
+e e b b b b b b b b b b b e b b 
+e e e e e e e e e e e e e e e e 
+e e e e b b b b b b b b b e e e 
+b b b b b b b e e e e e b b b b 
+e e e e e e b b b b b b b e e e 
+e e e e e e e e e e e e e e e e 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, 50, 0)
+        Log.setKind(SpriteKind.Food)
+        Log.setFlag(SpriteFlag.DestroyOnWall, true)
+        tiles.placeOnRandomTile(Log, myTiles.tile8)
+        Log.x = 0
+    }
     if (ChickenY < 3) {
         ChickenY += 1
         tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
@@ -565,18 +688,20 @@ game.onUpdateInterval(100, function () {
             Value.y += 16
         }
         LastTile = SelectedTile
-        SelectedTile = Math.randomRange(1, 3)
+        SelectedTile = Math.randomRange(1, 4)
         if (LastTile == 3) {
             while (SelectedTile == 3) {
-                SelectedTile = Math.randomRange(1, 3)
+                SelectedTile = Math.randomRange(1, 4)
             }
         }
         if (SelectedTile == 1) {
             make_road(0)
         } else if (SelectedTile == 2) {
             make_terrain(0)
-        } else {
+        } else if (SelectedTile == 3) {
             make_lilypad_river(0)
+        } else {
+            make_river(0)
         }
         info.changeScoreBy(1)
         update_tilemap()
