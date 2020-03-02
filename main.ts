@@ -141,29 +141,7 @@ e 7 d d e e d d f 2 f d e e d d
 7 7 7 7 7 e e e f f f 7 7 7 e e 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
-    //% blockIdentity=images._tile
-    export const tile8 = img`
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 6 6 6 9 9 9 9 9 9 
-9 9 6 6 6 6 6 6 9 6 6 6 6 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 6 6 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 6 6 6 9 9 9 9 9 9 9 9 9 
-9 6 6 6 9 9 6 6 6 6 9 6 6 6 9 9 
-9 9 9 9 9 9 9 9 9 6 6 6 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-`
 }
-scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile8, function (sprite, location) {
-    sprite.destroy()
-})
 scene.onOverlapTile(SpriteKind.Food, sprites.vehicle.roadHorizontal, function (sprite, location) {
     sprite.destroy()
 })
@@ -174,6 +152,7 @@ function make_lilypad_river (X: number) {
     for (let index = 0; index < Math.randomRange(4, 8); index++) {
         set_tile(X, Math.randomRange(1, 8), 8)
     }
+    set_tile(X, 1, 8)
 }
 sprites.onCreated(SpriteKind.Projectile, function (sprite) {
     Projectiles.push(sprite)
@@ -181,11 +160,6 @@ sprites.onCreated(SpriteKind.Projectile, function (sprite) {
 scene.onOverlapTile(SpriteKind.Food, myTiles.tile6, function (sprite, location) {
     sprite.destroy()
 })
-function make_river (X: number) {
-    for (let Index = 0; Index <= 9; Index++) {
-        set_tile(X, Index, 9)
-    }
-}
 scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass1, function (sprite, location) {
     sprite.destroy()
 })
@@ -194,6 +168,10 @@ scene.onOverlapTile(SpriteKind.Food, sprites.castle.tileGrass3, function (sprite
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += -1
+    Chicken.setVelocity(0, 0)
+    if (!(Chicken.overlapsWith(Log))) {
+        Logging = 0
+    }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     animation.setAction(Chicken, ActionKind.Left)
     if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
@@ -201,22 +179,32 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
         ChickenY += 1
     } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
-        Chicken.destroy(effects.fountain, 100)
-        Dead = 1
+        pause(25)
+        if (Logging == 0) {
+            Chicken.destroy(effects.fountain, 100)
+            Dead = 1
+        }
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenY += 1
+    Chicken.setVelocity(0, 0)
+    if (!(Chicken.overlapsWith(Log))) {
+        Logging = 0
+    }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     animation.setAction(Chicken, ActionKind.Backward)
     if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenY += 1
+        ChickenY += -1
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenY += 1
+        ChickenY += -1
     } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
-        Chicken.destroy(effects.fountain, 100)
-        Dead = 1
+        pause(25)
+        if (Logging == 0) {
+            Chicken.destroy(effects.fountain, 100)
+            Dead = 1
+        }
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
@@ -239,6 +227,10 @@ function set_tile (X: number, Y: number, TileNum: number) {
     List = Tilemap[X]
     List[Y] = TileNum
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    sprite.setVelocity(50, 0)
+    Logging = 1
+})
 scene.onOverlapTile(SpriteKind.Food, sprites.castle.rock0, function (sprite, location) {
     sprite.destroy()
 })
@@ -283,14 +275,12 @@ function update_tilemap () {
             } else if (Tile == 8) {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile4)
             } else if (Tile == 9) {
-                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile8)
-            } else if (Tile == 10) {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), sprites.vehicle.roadHorizontal)
-            } else if (Tile == 11) {
+            } else if (Tile == 10) {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile5)
-            } else if (Tile == 12) {
+            } else if (Tile == 11) {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile6)
-            } else if (Tile == 13) {
+            } else if (Tile == 12) {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile7)
             } else {
                 control.panic(200)
@@ -303,6 +293,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenX += 1
+    Chicken.setVelocity(0, 0)
+    if (!(Chicken.overlapsWith(Log))) {
+        Logging = 0
+    }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     animation.setAction(Chicken, ActionKind.Right)
     if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
@@ -310,8 +304,11 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
         ChickenY += 1
     } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
-        Chicken.destroy(effects.fountain, 100)
-        Dead = 1
+        pause(25)
+        if (Logging == 0) {
+            Chicken.destroy(effects.fountain, 100)
+            Dead = 1
+        }
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
@@ -321,6 +318,11 @@ scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile4, function (sprite, loca
 scene.onOverlapTile(SpriteKind.Food, sprites.castle.tileGrass2, function (sprite, location) {
     sprite.destroy()
 })
+function make_river (X: number) {
+    for (let Index = 0; Index <= 9; Index++) {
+        set_tile(X, Index, 7)
+    }
+}
 scene.onOverlapTile(SpriteKind.Projectile, sprites.builtin.forestTiles0, function (sprite, location) {
     sprite.destroy()
 })
@@ -332,11 +334,15 @@ scene.onOverlapTile(SpriteKind.Food, myTiles.tile5, function (sprite, location) 
 })
 function make_road (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
-        set_tile(X, Index, 10)
+        set_tile(X, Index, 9)
     }
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     ChickenY += -1
+    Chicken.setVelocity(0, 0)
+    if (!(Chicken.overlapsWith(Log))) {
+        Logging = 0
+    }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     animation.setAction(Chicken, ActionKind.Foward)
     if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
@@ -344,14 +350,14 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
         ChickenY += 1
     } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
-        Chicken.destroy(effects.fountain, 100)
-        Dead = 1
+        pause(25)
+        if (Logging == 0) {
+            Chicken.destroy(effects.fountain, 100)
+            Dead = 1
+        }
     }
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     Timeout = 100
-})
-scene.onOverlapTile(SpriteKind.Food, myTiles.tile3, function (sprite, location) {
-    sprite.destroy()
 })
 scene.onOverlapTile(SpriteKind.Food, sprites.builtin.forestTiles0, function (sprite, location) {
     sprite.destroy()
@@ -385,16 +391,17 @@ function make_terrain (X: number) {
 let Eagle: Sprite = null
 let SelectedTile = 0
 let LastTile = 0
-let Log: Sprite = null
 let Car: Sprite = null
 let Value = 0
 let Dump: Sprite = null
+let Log: Sprite = null
 let Tile = 0
 let Column = 0
 let Row = 0
 let List: number[] = []
 let Projectiles: Sprite[] = []
 let Tilemap: number[][] = []
+let Logging = 0
 let Dead = 0
 let Timeout = 0
 let ChickenY = 0
@@ -425,6 +432,7 @@ ChickenY = 4
 Timeout = 100
 let DeadTimeout = 20
 Dead = 0
+Logging = 0
 Tilemap = [[1]]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 for (let index = 0; index < 7; index++) {
@@ -482,7 +490,7 @@ make_terrain(0)
 info.setScore(0)
 scene.setBackgroundColor(7)
 tiles.setTilemap(tiles.createTilemap(
-            hex`0a0008000001040506070802030d0a090b0c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`,
+            hex`0a0008000001040506070802030a090b0c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`,
             img`
 . . . . . . . . . . 
 . . . . . . . . . . 
@@ -493,7 +501,7 @@ tiles.setTilemap(tiles.createTilemap(
 . . . . . . . . . . 
 . . . . . . . . . . 
 `,
-            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,sprites.castle.rock0,myTiles.tile5,sprites.vehicle.roadHorizontal,myTiles.tile6,myTiles.tile7,myTiles.tile8],
+            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,sprites.castle.rock0,myTiles.tile5,sprites.vehicle.roadHorizontal,myTiles.tile6,myTiles.tile7],
             TileScale.Sixteen
         ))
 let ChickenFowardAnim = animation.createAnimation(ActionKind.Foward, 100)
@@ -671,7 +679,7 @@ e e e e e e e e e e e e e e e e
 `, 50, 0)
         Log.setKind(SpriteKind.Food)
         Log.setFlag(SpriteFlag.DestroyOnWall, true)
-        tiles.placeOnRandomTile(Log, myTiles.tile8)
+        tiles.placeOnRandomTile(Log, myTiles.tile3)
         Log.x = 0
     }
     if (ChickenY < 3) {
