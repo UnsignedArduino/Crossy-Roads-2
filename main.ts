@@ -175,9 +175,9 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     animation.setAction(Chicken, ActionKind.Left)
     if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenY += 1
+        ChickenX += 1
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenY += 1
+        ChickenX += 1
     } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
         pause(25)
         if (Logging == 0) {
@@ -300,9 +300,9 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     animation.setAction(Chicken, ActionKind.Right)
     if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenY += 1
+        ChickenX += -1
     } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenY += 1
+        ChickenX += -1
     } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
         pause(25)
         if (Logging == 0) {
@@ -327,7 +327,7 @@ scene.onOverlapTile(SpriteKind.Projectile, sprites.builtin.forestTiles0, functio
     sprite.destroy()
 })
 scene.onOverlapTile(SpriteKind.Food, myTiles.tile4, function (sprite, location) {
-    sprite.destroy()
+    sprite.destroy(effects.fountain, 100)
 })
 scene.onOverlapTile(SpriteKind.Food, myTiles.tile5, function (sprite, location) {
     sprite.destroy()
@@ -702,6 +702,11 @@ e e e e e e e e e e e e e e e e
         SelectedTile = Math.randomRange(1, 4)
         if (LastTile == 3) {
             while (SelectedTile == 3) {
+                SelectedTile = Math.randomRange(1, 4)
+            }
+        }
+        if (LastTile == 4) {
+            while (SelectedTile == 4) {
                 SelectedTile = Math.randomRange(1, 4)
             }
         }
