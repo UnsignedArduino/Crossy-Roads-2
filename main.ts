@@ -156,6 +156,7 @@ function make_lilypad_river (X: number) {
 }
 sprites.onCreated(SpriteKind.Projectile, function (sprite) {
     Projectiles.push(sprite)
+    ProjectileLife.push(0)
 })
 scene.onOverlapTile(SpriteKind.Food, myTiles.tile6, function (sprite, location) {
     sprite.destroy()
@@ -399,6 +400,7 @@ let Tile = 0
 let Column = 0
 let Row = 0
 let List: number[] = []
+let ProjectileLife: number[] = []
 let Projectiles: Sprite[] = []
 let Tilemap: number[][] = []
 let Logging = 0
@@ -435,6 +437,7 @@ Dead = 0
 Logging = 0
 Tilemap = [[1]]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
+ProjectileLife = []
 for (let index = 0; index < 7; index++) {
     Tilemap.push([1])
 }
@@ -758,6 +761,9 @@ e e e e e e e e e e e e e e e e e e e .
         Eagle.setVelocity(0, 200)
         Chicken.setFlag(SpriteFlag.DestroyOnWall, true)
         Eagle.setFlag(SpriteFlag.DestroyOnWall, true)
+    }
+    for (let Index = 0; Index <= ProjectileLife.length; Index++) {
+        ProjectileLife[Index] = ProjectileLife[Index] + 1
     }
     console.log(Projectiles.length)
 })
