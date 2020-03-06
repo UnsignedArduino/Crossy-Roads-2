@@ -759,6 +759,12 @@ e e e e e e e e e e e e e e e e e e e .
         Chicken.setFlag(SpriteFlag.DestroyOnWall, true)
         Eagle.setFlag(SpriteFlag.DestroyOnWall, true)
     }
+    if (Projectiles.length >= 100) {
+        console.log("Array has overflowed. Clearing first 25 elements!")
+        for (let index = 0; index < 25; index++) {
+            Dump = Projectiles.shift()
+        }
+    }
     console.log(Projectiles.length)
 })
 game.onUpdate(function () {
