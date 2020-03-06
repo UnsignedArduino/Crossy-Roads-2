@@ -760,8 +760,8 @@ e e e e e e e e e e e e e e e e e e e .
         Eagle.setFlag(SpriteFlag.DestroyOnWall, true)
     }
     if (Projectiles.length >= 100) {
-        console.log("Array has overflowed. Clearing first 25 elements!")
-        for (let index = 0; index < 25; index++) {
+        console.log("Array is bigger than 100. Clearing first 50 elements!")
+        for (let index = 0; index < 50; index++) {
             Dump = Projectiles.shift()
         }
     }
