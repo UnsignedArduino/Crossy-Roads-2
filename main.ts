@@ -228,7 +228,7 @@ function set_tile (X: number, Y: number, TileNum: number) {
     List[Y] = TileNum
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    sprite.setVelocity(32, 0)
+    sprite.setVelocity(-32, 0)
     Logging = 1
 })
 scene.onOverlapTile(SpriteKind.Food, sprites.castle.rock0, function (sprite, location) {
@@ -676,14 +676,14 @@ e e e e e e e e e e e e e e e e
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-`, 32, 0)
+`, -32, 0)
         Log.setKind(SpriteKind.Food)
         Log.setFlag(SpriteFlag.DestroyOnWall, true)
         tiles.placeOnRandomTile(Log, myTiles.tile3)
-        Log.x = 0
+        Log.x = 160
     }
     if (Logging == 1) {
-        ChickenX += 32 / 16 / 10
+        ChickenX += 32 / 16 / 10 * -1
     }
     if (ChickenY < 3) {
         ChickenY += 1
