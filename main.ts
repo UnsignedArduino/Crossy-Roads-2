@@ -86,60 +86,60 @@ namespace myTiles {
 `
     //% blockIdentity=images._tile
     export const tile5 = img`
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-e 7 7 7 7 7 e e 7 7 7 7 7 7 7 7 
-e e 7 7 e e e e e e e e e 7 7 e 
+e e e e e e e e e e e e e e e e 
+e e e e e e e e e e e e e e e e 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+f f f f f f f f f f f f f f f f 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
 e e d d e e d d e e d d e e d d 
 f f f f f f f f f f f f f f f f 
 e e d d e e d d e e d d e e d d 
 e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-f f f f f f f f f f f f f f f f 
-e 7 d d e e d d e e d d e e d d 
-7 7 7 7 7 e e e 7 7 7 7 7 7 e e 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+e e e e e e e e e e e e e e e e 
 `
     //% blockIdentity=images._tile
     export const tile6 = img`
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-e 7 7 7 7 7 e e 7 7 7 7 7 7 7 7 
-e e 7 7 e e e e e e e e e 7 7 e 
-e e d d e e d d e e d d e e d d 
-f f f f f f f f f f f f f f f f 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
+e e e e e e e e e e e e e e e e 
+e e e e e e e e e e e e e e e e 
 e e d d e e d d e e d d e e d d 
 e e d d e e d d e e d d e e d d 
 f f f f f f f f f f f f f f f f 
-e 7 d d e e d d f c f d e e d d 
-7 7 7 7 7 e e e f f f 7 7 7 e e 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+f f f f f f f f f f f f f f f f 
+e e d d e e d d f c f d e e d d 
+e e d d e e d d f f f d e e d d 
+e e e e e e e e e e e e e e e e 
 `
     //% blockIdentity=images._tile
     export const tile7 = img`
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-e 7 7 7 7 7 e e 7 7 7 7 7 7 7 7 
-e e 7 7 e e e e e e e e e 7 7 e 
-e e d d e e d d e e d d e e d d 
-f f f f f f f f f f f f f f f f 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
-e e d d e e d d e e d d e e d d 
+e e e e e e e e e e e e e e e e 
+e e e e e e e e e e e e e e e e 
 e e d d e e d d e e d d e e d d 
 e e d d e e d d e e d d e e d d 
 f f f f f f f f f f f f f f f f 
-e 7 d d e e d d f 2 f d e e d d 
-7 7 7 7 7 e e e f f f 7 7 7 e e 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+e e d d e e d d e e d d e e d d 
+f f f f f f f f f f f f f f f f 
+e e d d e e d d f 2 f d e e d d 
+e e d d e e d d f f f d e e d d 
+e e e e e e e e e e e e e e e e 
 `
 }
 scene.onOverlapTile(SpriteKind.Food, sprites.vehicle.roadHorizontal, function (sprite, location) {
@@ -231,6 +231,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     sprite.setVelocity(-32, 0)
     Logging = 1
 })
+function make_railroad (X: number) {
+    for (let Index = 0; Index <= 9; Index++) {
+        set_tile(X, Index, 10)
+    }
+}
 scene.onOverlapTile(SpriteKind.Food, sprites.castle.rock0, function (sprite, location) {
     sprite.destroy()
 })
@@ -699,15 +704,20 @@ e e e e e e e e e e e e e e e e
             Value.y += 16
         }
         LastTile = SelectedTile
-        SelectedTile = Math.randomRange(1, 4)
+        SelectedTile = Math.randomRange(1, 5)
         if (LastTile == 3) {
             while (SelectedTile == 3) {
-                SelectedTile = Math.randomRange(1, 4)
+                SelectedTile = Math.randomRange(1, 5)
             }
         }
         if (LastTile == 4) {
             while (SelectedTile == 4) {
-                SelectedTile = Math.randomRange(1, 4)
+                SelectedTile = Math.randomRange(1, 5)
+            }
+        }
+        if (LastTile == 5) {
+            while (SelectedTile == 5) {
+                SelectedTile = Math.randomRange(1, 5)
             }
         }
         if (SelectedTile == 1) {
@@ -716,8 +726,14 @@ e e e e e e e e e e e e e e e e
             make_terrain(0)
         } else if (SelectedTile == 3) {
             make_lilypad_river(0)
-        } else {
+        } else if (SelectedTile == 4) {
             make_river(0)
+        } else {
+            if (Math.percentChance(50)) {
+                make_railroad(0)
+            } else {
+                make_road(0)
+            }
         }
         info.changeScoreBy(1)
         update_tilemap()
