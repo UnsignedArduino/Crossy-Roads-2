@@ -249,6 +249,24 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
 scene.onOverlapTile(SpriteKind.Food, myTiles.tile2, function (sprite, location) {
     sprite.destroy()
 })
+function select_tile () {
+    SelectedTile = Math.randomRange(1, 5)
+    if (LastTile == 3) {
+        while (SelectedTile == 3) {
+            SelectedTile = Math.randomRange(1, 5)
+        }
+    }
+    if (LastTile == 4) {
+        while (SelectedTile == 4) {
+            SelectedTile = Math.randomRange(1, 5)
+        }
+    }
+    if (LastTile == 5) {
+        while (SelectedTile == 5) {
+            SelectedTile = Math.randomRange(1, 5)
+        }
+    }
+}
 scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile6, function (sprite, location) {
     sprite.destroy()
 })
@@ -394,10 +412,10 @@ function make_terrain (X: number) {
     }
 }
 let Eagle: Sprite = null
-let SelectedTile = 0
-let LastTile = 0
 let Car: Sprite = null
 let Value = 0
+let LastTile = 0
+let SelectedTile = 0
 let Dump: Sprite = null
 let Log: Sprite = null
 let Tile = 0
@@ -438,6 +456,7 @@ Timeout = 100
 let DeadTimeout = 20
 Dead = 0
 Logging = 0
+let Railroad = 0
 Tilemap = [[1]]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 for (let index = 0; index < 7; index++) {
@@ -703,23 +722,11 @@ e e e e e e e e e e e e e e e e
         for (let Value of Projectiles) {
             Value.y += 16
         }
+        if (Railroad > 0) {
+            Railroad += -1
+        }
         LastTile = SelectedTile
-        SelectedTile = Math.randomRange(1, 5)
-        if (LastTile == 3) {
-            while (SelectedTile == 3) {
-                SelectedTile = Math.randomRange(1, 5)
-            }
-        }
-        if (LastTile == 4) {
-            while (SelectedTile == 4) {
-                SelectedTile = Math.randomRange(1, 5)
-            }
-        }
-        if (LastTile == 5) {
-            while (SelectedTile == 5) {
-                SelectedTile = Math.randomRange(1, 5)
-            }
-        }
+        select_tile()
         if (SelectedTile == 1) {
             make_road(0)
         } else if (SelectedTile == 2) {
@@ -729,10 +736,20 @@ e e e e e e e e e e e e e e e e
         } else if (SelectedTile == 4) {
             make_river(0)
         } else {
-            if (Math.percentChance(50)) {
+            if (Railroad <= 0) {
                 make_railroad(0)
+                Railroad = 8
             } else {
-                make_road(0)
+                select_tile()
+                if (SelectedTile == 1) {
+                    make_road(0)
+                } else if (SelectedTile == 2) {
+                    make_terrain(0)
+                } else if (SelectedTile == 3) {
+                    make_lilypad_river(0)
+                } else if (SelectedTile == 4) {
+                    make_river(0)
+                }
             }
         }
         info.changeScoreBy(1)
