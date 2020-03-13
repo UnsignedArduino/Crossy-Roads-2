@@ -710,6 +710,11 @@ e e e e e e e e e e e e e e e e
     if (Logging == 1) {
         ChickenX += 32 / 16 / 10 * -1
     }
+    if (Railroad > 0) {
+        if (Math.percentChance(25)) {
+        	
+        }
+    }
     if (ChickenY < 3) {
         ChickenY += 1
         tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
