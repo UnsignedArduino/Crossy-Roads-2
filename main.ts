@@ -7,6 +7,9 @@ enum ActionKind {
     Idle,
     Jumping
 }
+namespace SpriteKind {
+    export const AnotherProjectile = SpriteKind.create()
+}
 namespace myTiles {
     //% blockIdentity=images._tile
     export const tile0 = img`
@@ -339,6 +342,10 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile4, function (sprite, location) {
     sprite.destroy()
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.AnotherProjectile, function (sprite, otherSprite) {
+    sprite.destroy(effects.spray, 100)
+    Dead = 1
+})
 scene.onOverlapTile(SpriteKind.Food, sprites.castle.tileGrass2, function (sprite, location) {
     sprite.destroy()
 })
@@ -412,6 +419,7 @@ function make_terrain (X: number) {
         }
     }
 }
+let Train: Sprite = null
 let Eagle: Sprite = null
 let Car: Sprite = null
 let Value = 0
@@ -458,8 +466,8 @@ let DeadTimeout = 20
 Dead = 0
 Logging = 0
 let Railroad = 0
-let Coming = -1
-let Train = 0
+let TrainTime = 0
+let DoTrain = 0
 Tilemap = [[1]]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 for (let index = 0; index < 7; index++) {
@@ -713,15 +721,20 @@ e e e e e e e e e e e e e e e e
         ChickenX += 32 / 16 / 10 * -1
     }
     if (Railroad > 0) {
-        if (Coming == -1) {
-            if (Math.percentChance(100)) {
-                Coming = 20
-                set_tile(8 - Railroad, 2, 12)
-            }
+        TrainTime += -1
+        if (TrainTime <= 60 && TrainTime >= 40) {
+            set_tile(8 - Railroad, 2, 11)
+            DoTrain = 0
+        } else if (TrainTime <= 40 && TrainTime >= 20) {
+            set_tile(8 - Railroad, 2, 12)
+            DoTrain = 0
+        } else {
+            DoTrain = 1
         }
-    }
-    if (Coming > 0) {
-        Column += -1
+        update_tilemap()
+        if (TrainTime <= 0) {
+            TrainTime = 60
+        }
     }
     if (ChickenY < 3) {
         ChickenY += 1
@@ -776,12 +789,13 @@ e e e e e e e e e e e e e e e e
             game.over(false, effects.melt)
         }
     }
-    if (Timeout > 0) {
-        Timeout += -1
-    } else {
-        Timeout = 100
-        Dead = 1
-        Eagle = sprites.create(img`
+    if (false) {
+        if (Timeout > 0) {
+            Timeout += -1
+        } else {
+            Timeout = 100
+            Dead = 1
+            Eagle = sprites.create(img`
 . . . . . . . e e e e e . . . . . . . . 
 . . . . . . . e e e e e . . . . . . . . 
 . . . . . . . e e e e e . . . . . . . . 
@@ -801,10 +815,11 @@ e e e e e e e e e e e e e e e e e e e .
 . . . . . . . 1 1 4 1 1 . . . . . . . . 
 . . . . . . . . . 4 . . . . . . . . . . 
 `, SpriteKind.Enemy)
-        Eagle.setPosition(Chicken.x, 0)
-        Eagle.setVelocity(0, 200)
-        Chicken.setFlag(SpriteFlag.DestroyOnWall, true)
-        Eagle.setFlag(SpriteFlag.DestroyOnWall, true)
+            Eagle.setPosition(Chicken.x, 0)
+            Eagle.setVelocity(0, 200)
+            Chicken.setFlag(SpriteFlag.DestroyOnWall, true)
+            Eagle.setFlag(SpriteFlag.DestroyOnWall, true)
+        }
     }
     if (Projectiles.length >= 100) {
         console.log("Array is bigger than 100. Clearing first 50 elements!")
@@ -812,7 +827,7 @@ e e e e e e e e e e e e e e e e e e e .
             Dump = Projectiles.shift()
         }
     }
-    console.log(Projectiles.length)
+    console.log("" + Projectiles.length + ", " + TrainTime)
 })
 game.onUpdate(function () {
     if (ChickenX < 0) {
@@ -826,5 +841,28 @@ game.onUpdate(function () {
     }
     if (ChickenY > 7) {
         ChickenY = 7
+    }
+    if (DoTrain == 1) {
+        Train = sprites.createProjectileFromSide(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. d d d d d d d d d d d d d d . 
+. b b b b b b b b b b b b b b . 
+. d b d d d d d d d d d d b d . 
+. d b d d d d d d d d d d b d . 
+f d b d d d d d d d d d d b d f 
+f d b d d d d d d d d d d b d f 
+. d b d d d d d d d d d d b d . 
+. d b d d d d d d d d d d b d . 
+. b b b b b b b b b b b b b b . 
+. d d d d d d d d d d d d d d . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, 200, 0)
+        tiles.placeOnRandomTile(Train, myTiles.tile5)
+        Train.x = 0
+        Train.setKind(SpriteKind.AnotherProjectile)
     }
 })
