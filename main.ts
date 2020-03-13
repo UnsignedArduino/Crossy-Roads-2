@@ -458,6 +458,8 @@ let DeadTimeout = 20
 Dead = 0
 Logging = 0
 let Railroad = 0
+let Coming = -1
+let Train = 0
 Tilemap = [[1]]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 for (let index = 0; index < 7; index++) {
@@ -711,9 +713,15 @@ e e e e e e e e e e e e e e e e
         ChickenX += 32 / 16 / 10 * -1
     }
     if (Railroad > 0) {
-        if (Math.percentChance(25)) {
-        	
+        if (Coming == -1) {
+            if (Math.percentChance(100)) {
+                Coming = 20
+                set_tile(8 - Railroad, 2, 12)
+            }
         }
+    }
+    if (Coming > 0) {
+        Column += -1
     }
     if (ChickenY < 3) {
         ChickenY += 1
