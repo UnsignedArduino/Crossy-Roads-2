@@ -235,6 +235,7 @@ function make_railroad (X: number) {
     for (let Index = 0; Index <= 9; Index++) {
         set_tile(X, Index, 10)
     }
+    set_tile(X, 2, 11)
 }
 scene.onOverlapTile(SpriteKind.Food, sprites.castle.rock0, function (sprite, location) {
     sprite.destroy()
