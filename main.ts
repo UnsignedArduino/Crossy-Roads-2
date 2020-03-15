@@ -163,6 +163,111 @@ sprites.onCreated(SpriteKind.Projectile, function (sprite) {
 scene.onOverlapTile(SpriteKind.Food, myTiles.tile6, function (sprite, location) {
     sprite.destroy()
 })
+function summon_chicken () {
+    Chicken = sprites.create(img`
+. . . . . . . 2 2 . . . . . . . 
+. . . . . 1 1 2 2 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . d 1 1 1 1 1 1 d . . . . 
+. . . . d 1 d d d d 1 d . . . . 
+. . . . d 1 d d d d 1 d . . . . 
+. . . . d 1 d d d d 1 d . . . . 
+. . . . . 1 d d d d 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . 4 4 4 4 4 4 . . . . . 
+`, SpriteKind.Player)
+    Chicken.setFlag(SpriteFlag.StayInScreen, true)
+    Chicken.setFlag(SpriteFlag.ShowPhysics, false)
+    ChickenFowardAnim = animation.createAnimation(ActionKind.Foward, 100)
+    ChickenFowardAnim.addAnimationFrame(img`
+. . . . . . . 2 2 . . . . . . . 
+. . . . . 1 1 2 2 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . d 1 1 1 1 1 1 d . . . . 
+. . . . d 1 d d d d 1 d . . . . 
+. . . . d 1 d d d d 1 d . . . . 
+. . . . d 1 d d d d 1 d . . . . 
+. . . . . 1 d d d d 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . 4 4 4 4 4 4 . . . . . 
+`)
+    animation.attachAnimation(Chicken, ChickenFowardAnim)
+    ChickenBackwardAnim = animation.createAnimation(ActionKind.Backward, 100)
+    ChickenBackwardAnim.addAnimationFrame(img`
+. . . . . . . 2 2 . . . . . . . 
+. . . . . 1 1 2 2 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 f 1 1 f 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 4 4 1 1 . . . . . 
+. . . . d 1 1 4 4 1 1 d . . . . 
+. . . . d 1 1 1 1 1 1 d . . . . 
+. . . . d 1 1 1 1 1 1 d . . . . 
+. . . . d 1 1 1 1 1 1 d . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . 4 4 4 4 4 4 . . . . . 
+`)
+    animation.attachAnimation(Chicken, ChickenBackwardAnim)
+    ChickenLeftAnim = animation.createAnimation(ActionKind.Left, 100)
+    ChickenLeftAnim.addAnimationFrame(img`
+. . . . . . . . . . . . . . . . 
+. . . . 2 2 . . . . . . . . . . 
+. . . 1 1 1 1 1 . . . . . . . . 
+. . . 1 1 1 1 1 . . . . . . . . 
+. . 4 1 1 1 1 1 . . . . . . . . 
+. . 4 1 1 1 1 1 . . . . . . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 1 d d d d d d 1 d . . 
+. . . 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . 4 4 4 . . . . . 
+`)
+    animation.attachAnimation(Chicken, ChickenLeftAnim)
+    ChickenRightAnim = animation.createAnimation(ActionKind.Right, 100)
+    LeftFlipped = img`
+. . . . . . . . . . . . . . . . 
+. . . . 2 2 . . . . . . . . . . 
+. . . 1 1 1 1 1 . . . . . . . . 
+. . . 1 1 1 1 1 . . . . . . . . 
+. . 4 1 1 1 1 1 . . . . . . . . 
+. . 4 1 1 1 1 1 . . . . . . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 1 d d d d d d 1 d . . 
+. . . 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . 4 4 4 . . . . . 
+`
+    LeftFlipped.flipX()
+    ChickenRightAnim.addAnimationFrame(LeftFlipped)
+    animation.attachAnimation(Chicken, ChickenRightAnim)
+    animation.setAction(Chicken, ActionKind.Foward)
+}
 scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass1, function (sprite, location) {
     sprite.destroy()
 })
@@ -427,6 +532,12 @@ let LastTile = 0
 let SelectedTile = 0
 let Dump: Sprite = null
 let Log: Sprite = null
+let LeftFlipped: Image = null
+let ChickenRightAnim: animation.Animation = null
+let ChickenLeftAnim: animation.Animation = null
+let ChickenBackwardAnim: animation.Animation = null
+let ChickenFowardAnim: animation.Animation = null
+let Chicken: Sprite = null
 let Tile = 0
 let Column = 0
 let Row = 0
@@ -438,27 +549,7 @@ let Dead = 0
 let Timeout = 0
 let ChickenY = 0
 let ChickenX = 0
-let Chicken: Sprite = null
-Chicken = sprites.create(img`
-. . . . . . . 2 2 . . . . . . . 
-. . . . . 1 1 2 2 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . . 1 d d d d 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . 4 4 4 4 4 4 . . . . . 
-`, SpriteKind.Player)
-Chicken.setFlag(SpriteFlag.StayInScreen, true)
-Chicken.setFlag(SpriteFlag.ShowPhysics, false)
+summon_chicken()
 ChickenX = 4
 ChickenY = 4
 Timeout = 100
@@ -539,89 +630,6 @@ tiles.setTilemap(tiles.createTilemap(
             [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,sprites.castle.rock0,myTiles.tile5,sprites.vehicle.roadHorizontal,myTiles.tile6,myTiles.tile7],
             TileScale.Sixteen
         ))
-let ChickenFowardAnim = animation.createAnimation(ActionKind.Foward, 100)
-ChickenFowardAnim.addAnimationFrame(img`
-. . . . . . . 2 2 . . . . . . . 
-. . . . . 1 1 2 2 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . . 1 d d d d 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . 4 4 4 4 4 4 . . . . . 
-`)
-animation.attachAnimation(Chicken, ChickenFowardAnim)
-let ChickenBackwardAnim = animation.createAnimation(ActionKind.Backward, 100)
-ChickenBackwardAnim.addAnimationFrame(img`
-. . . . . . . 2 2 . . . . . . . 
-. . . . . 1 1 2 2 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 f 1 1 f 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 4 4 1 1 . . . . . 
-. . . . d 1 1 4 4 1 1 d . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . 4 4 4 4 4 4 . . . . . 
-`)
-animation.attachAnimation(Chicken, ChickenBackwardAnim)
-let ChickenLeftAnim = animation.createAnimation(ActionKind.Left, 100)
-ChickenLeftAnim.addAnimationFrame(img`
-. . . . . . . . . . . . . . . . 
-. . . . 2 2 . . . . . . . . . . 
-. . . 1 1 1 1 1 . . . . . . . . 
-. . . 1 1 1 1 1 . . . . . . . . 
-. . 4 1 1 1 1 1 . . . . . . . . 
-. . 4 1 1 1 1 1 . . . . . . . . 
-. . . 1 1 1 1 1 1 1 1 1 1 . . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 1 d d d d d d 1 d . . 
-. . . 1 1 1 1 1 1 1 1 1 1 . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . 4 4 4 . . . . . 
-`)
-animation.attachAnimation(Chicken, ChickenLeftAnim)
-let ChickenRightAnim = animation.createAnimation(ActionKind.Right, 100)
-let LeftFlipped = img`
-. . . . . . . . . . . . . . . . 
-. . . . 2 2 . . . . . . . . . . 
-. . . 1 1 1 1 1 . . . . . . . . 
-. . . 1 1 1 1 1 . . . . . . . . 
-. . 4 1 1 1 1 1 . . . . . . . . 
-. . 4 1 1 1 1 1 . . . . . . . . 
-. . . 1 1 1 1 1 1 1 1 1 1 . . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 1 d d d d d d 1 d . . 
-. . . 1 1 1 1 1 1 1 1 1 1 . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . 4 4 4 . . . . . 
-`
-LeftFlipped.flipX()
-ChickenRightAnim.addAnimationFrame(LeftFlipped)
-animation.attachAnimation(Chicken, ChickenRightAnim)
-animation.setAction(Chicken, ActionKind.Foward)
 update_tilemap()
 tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 game.showLongText("Welcome to Crossy Roads 2!", DialogLayout.Bottom)
@@ -719,6 +727,9 @@ e e e e e e e e e e e e e e e e
     }
     if (Logging == 1) {
         ChickenX += 32 / 16 / 10 * -1
+        Chicken.destroy()
+        summon_chicken()
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     }
     if (Railroad > 0) {
         TrainTime += -1
@@ -789,7 +800,7 @@ e e e e e e e e e e e e e e e e
             game.over(false, effects.melt)
         }
     }
-    if (false) {
+    if (true) {
         if (Timeout > 0) {
             Timeout += -1
         } else {

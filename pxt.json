@@ -2,7 +2,8 @@
     "name": "Crossy Roads 2",
     "dependencies": {
         "device": "*",
-        "animation": "*"
+        "animation": "*",
+        "controller": "*"
     },
     "description": "",
     "files": [
