@@ -449,6 +449,7 @@ let Timeout = 0
 let ChickenY = 0
 let ChickenX = 0
 let Chicken: Sprite = null
+let Intro = 1
 Chicken = sprites.create(img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
@@ -638,11 +639,13 @@ game.showLongText("Welcome to Crossy Roads 2!", DialogLayout.Bottom)
 game.showLongText("In this game, you will have to get as far as you can without getting abducted, ran over, or drowning.", DialogLayout.Bottom)
 game.showLongText("Use the joystick/d-pad to move your chicken around.", DialogLayout.Bottom)
 game.showLongText("Have fun!", DialogLayout.Bottom)
+Intro = 1
 game.onUpdateInterval(100, function () {
-    if (Math.percentChance(25)) {
-        Value = Math.randomRange(1, 3)
-        if (Value == 1) {
-            Car = sprites.createProjectileFromSide(img`
+    if (Intro == 1) {
+        if (Math.percentChance(25)) {
+            Value = Math.randomRange(1, 3)
+            if (Value == 1) {
+                Car = sprites.createProjectileFromSide(img`
 . . . . . . . . . . . . . . . . 
 . . . . 2 2 2 2 2 2 2 2 . . . . 
 . . . 2 4 2 2 2 2 2 2 c 2 . . . 
@@ -660,8 +663,8 @@ game.onUpdateInterval(100, function () {
 . . . f f f . . . . f f f f . . 
 . . . . . . . . . . . . . . . . 
 `, 50, 0)
-        } else if (Value == 2) {
-            Car = sprites.createProjectileFromSide(img`
+            } else if (Value == 2) {
+                Car = sprites.createProjectileFromSide(img`
 . . . . . . . . . . . . . . . . 
 . . . . 6 6 6 6 6 6 6 6 . . . . 
 . . . 6 9 6 6 6 6 6 6 c 6 . . . 
@@ -679,8 +682,8 @@ game.onUpdateInterval(100, function () {
 . . . f f f . . . . f f f f . . 
 . . . . . . . . . . . . . . . . 
 `, 50, 0)
-        } else {
-            Car = sprites.createProjectileFromSide(img`
+            } else {
+                Car = sprites.createProjectileFromSide(img`
 . . . . . . . . . . . . . . . . 
 . . . . 3 3 3 3 3 3 3 3 . . . . 
 . . . 3 d 3 3 3 3 3 3 c 3 . . . 
@@ -698,13 +701,13 @@ game.onUpdateInterval(100, function () {
 . . . f f f . . . . f f f f . . 
 . . . . . . . . . . . . . . . . 
 `, 50, 0)
+            }
+            Car.setFlag(SpriteFlag.DestroyOnWall, true)
+            tiles.placeOnRandomTile(Car, sprites.vehicle.roadHorizontal)
+            Car.x = 0
         }
-        Car.setFlag(SpriteFlag.DestroyOnWall, true)
-        tiles.placeOnRandomTile(Car, sprites.vehicle.roadHorizontal)
-        Car.x = 0
-    }
-    if (Math.percentChance(25)) {
-        Log = sprites.createProjectileFromSide(img`
+        if (Math.percentChance(25)) {
+            Log = sprites.createProjectileFromSide(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -722,93 +725,93 @@ e e e e e e e e e e e e e e e e
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, -32, 0)
-        Log.setKind(SpriteKind.Food)
-        Log.setFlag(SpriteFlag.DestroyOnWall, true)
-        tiles.placeOnRandomTile(Log, myTiles.tile3)
-        Log.x = 160
-    }
-    if (Logging == 1) {
-        ChickenX += 32 / 16 / 10 * -1
-    }
-    if (Railroad > 0) {
-        TrainTime += -1
-        if (TrainTime <= 60 && TrainTime >= 40) {
-            set_tile(8 - Railroad, 2, 11)
-            DoTrain = 0
-        } else if (TrainTime <= 40 && TrainTime >= 20) {
-            set_tile(8 - Railroad, 2, 12)
-            DoTrain = 0
-        } else {
-            DoTrain = 1
+            Log.setKind(SpriteKind.Food)
+            Log.setFlag(SpriteFlag.DestroyOnWall, true)
+            tiles.placeOnRandomTile(Log, myTiles.tile3)
+            Log.x = 160
         }
-        update_tilemap()
-        if (TrainTime <= 0) {
-            TrainTime = 60
-        }
-    } else {
-        TrainTime = 60
-        DoTrain = 0
-    }
-    if (ChickenY < 3) {
-        ChickenY += 1
-        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-        Tilemap.reverse()
-        Tilemap.push([1])
-        Tilemap.reverse()
-        List = Tilemap[0]
-        for (let index = 0; index < 9; index++) {
-            List.push(1)
-        }
-        for (let Value of Projectiles) {
-            Value.y += 16
+        if (Logging == 1) {
+            ChickenX += 32 / 16 / 10 * -1
         }
         if (Railroad > 0) {
-            Railroad += -1
-        }
-        LastTile = SelectedTile
-        select_tile()
-        if (SelectedTile == 1) {
-            make_road(0)
-        } else if (SelectedTile == 2) {
-            make_terrain(0)
-        } else if (SelectedTile == 3) {
-            make_lilypad_river(0)
-        } else if (SelectedTile == 4) {
-            make_river(0)
-        } else {
-            if (Railroad <= 0) {
-                make_railroad(0)
-                Railroad = 8
+            TrainTime += -1
+            if (TrainTime <= 60 && TrainTime >= 40) {
+                set_tile(8 - Railroad, 2, 11)
+                DoTrain = 0
+            } else if (TrainTime <= 40 && TrainTime >= 20) {
+                set_tile(8 - Railroad, 2, 12)
+                DoTrain = 0
             } else {
-                select_tile()
-                if (SelectedTile == 1) {
-                    make_road(0)
-                } else if (SelectedTile == 2) {
-                    make_terrain(0)
-                } else if (SelectedTile == 3) {
-                    make_lilypad_river(0)
-                } else if (SelectedTile == 4) {
-                    make_river(0)
+                DoTrain = 1
+            }
+            update_tilemap()
+            if (TrainTime <= 0) {
+                TrainTime = 60
+            }
+        } else {
+            TrainTime = 60
+            DoTrain = 0
+        }
+        if (ChickenY < 3) {
+            ChickenY += 1
+            tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+            Tilemap.reverse()
+            Tilemap.push([1])
+            Tilemap.reverse()
+            List = Tilemap[0]
+            for (let index = 0; index < 9; index++) {
+                List.push(1)
+            }
+            for (let Value of Projectiles) {
+                Value.y += 16
+            }
+            if (Railroad > 0) {
+                Railroad += -1
+            }
+            LastTile = SelectedTile
+            select_tile()
+            if (SelectedTile == 1) {
+                make_road(0)
+            } else if (SelectedTile == 2) {
+                make_terrain(0)
+            } else if (SelectedTile == 3) {
+                make_lilypad_river(0)
+            } else if (SelectedTile == 4) {
+                make_river(0)
+            } else {
+                if (Railroad <= 0) {
+                    make_railroad(0)
+                    Railroad = 8
+                } else {
+                    select_tile()
+                    if (SelectedTile == 1) {
+                        make_road(0)
+                    } else if (SelectedTile == 2) {
+                        make_terrain(0)
+                    } else if (SelectedTile == 3) {
+                        make_lilypad_river(0)
+                    } else if (SelectedTile == 4) {
+                        make_river(0)
+                    }
                 }
             }
+            info.changeScoreBy(1)
+            update_tilemap()
         }
-        info.changeScoreBy(1)
-        update_tilemap()
-    }
-    if (Dead) {
-        if (DeadTimeout > 0) {
-            DeadTimeout += -1
-        } else {
-            game.over(false, effects.melt)
+        if (Dead) {
+            if (DeadTimeout > 0) {
+                DeadTimeout += -1
+            } else {
+                game.over(false, effects.melt)
+            }
         }
-    }
-    if (true) {
-        if (Timeout > 0) {
-            Timeout += -1
-        } else {
-            Timeout = 100
-            Dead = 1
-            Eagle = sprites.create(img`
+        if (true) {
+            if (Timeout > 0) {
+                Timeout += -1
+            } else {
+                Timeout = 100
+                Dead = 1
+                Eagle = sprites.create(img`
 . . . . . . . e e e e e . . . . . . . . 
 . . . . . . . e e e e e . . . . . . . . 
 . . . . . . . e e e e e . . . . . . . . 
@@ -828,19 +831,20 @@ e e e e e e e e e e e e e e e e e e e .
 . . . . . . . 1 1 4 1 1 . . . . . . . . 
 . . . . . . . . . 4 . . . . . . . . . . 
 `, SpriteKind.Enemy)
-            Eagle.setPosition(Chicken.x, 0)
-            Eagle.setVelocity(0, 200)
-            Chicken.setFlag(SpriteFlag.DestroyOnWall, true)
-            Eagle.setFlag(SpriteFlag.DestroyOnWall, true)
+                Eagle.setPosition(Chicken.x, 0)
+                Eagle.setVelocity(0, 200)
+                Chicken.setFlag(SpriteFlag.DestroyOnWall, true)
+                Eagle.setFlag(SpriteFlag.DestroyOnWall, true)
+            }
         }
-    }
-    if (Projectiles.length >= 100) {
-        console.log("Array is bigger than 100. Clearing first 50 elements!")
-        for (let index = 0; index < 50; index++) {
-            Dump = Projectiles.shift()
+        if (Projectiles.length >= 100) {
+            console.log("Array is bigger than 100. Clearing first 50 elements!")
+            for (let index = 0; index < 50; index++) {
+                Dump = Projectiles.shift()
+            }
         }
+        console.log("" + Projectiles.length + ", " + TrainTime + ", " + Logging)
     }
-    console.log("" + Projectiles.length + ", " + TrainTime + ", " + Logging)
 })
 game.onUpdate(function () {
     if (ChickenX < 0) {
