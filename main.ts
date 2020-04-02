@@ -170,46 +170,50 @@ scene.onOverlapTile(SpriteKind.Food, sprites.castle.tileGrass3, function (sprite
     sprite.destroy()
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    ChickenX += -1
-    Chicken.setVelocity(0, 0)
-    if (!(Chicken.overlapsWith(Log))) {
-        Logging = 0
-    }
-    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-    animation.setAction(Chicken, ActionKind.Left)
-    if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenX += 1
-    } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenX += 1
-    } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
-        pause(25)
-        if (Logging == 0) {
-            Chicken.destroy(effects.fountain, 100)
-            Dead = 1
+    if (Dead == 0) {
+        ChickenX += -1
+        Chicken.setVelocity(0, 0)
+        if (!(Chicken.overlapsWith(Log))) {
+            Logging = 0
         }
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+        animation.setAction(Chicken, ActionKind.Left)
+        if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
+            ChickenX += 1
+        } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
+            ChickenX += 1
+        } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
+            pause(25)
+            if (Logging == 0) {
+                Chicken.destroy(effects.fountain, 100)
+                Dead = 1
+            }
+        }
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     }
-    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    ChickenY += 1
-    Chicken.setVelocity(0, 0)
-    if (!(Chicken.overlapsWith(Log))) {
-        Logging = 0
-    }
-    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-    animation.setAction(Chicken, ActionKind.Backward)
-    if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenY += -1
-    } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenY += -1
-    } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
-        pause(25)
-        if (Logging == 0) {
-            Chicken.destroy(effects.fountain, 100)
-            Dead = 1
+    if (Dead == 0) {
+        ChickenY += 1
+        Chicken.setVelocity(0, 0)
+        if (!(Chicken.overlapsWith(Log))) {
+            Logging = 0
         }
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+        animation.setAction(Chicken, ActionKind.Backward)
+        if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
+            ChickenY += -1
+        } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
+            ChickenY += -1
+        } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
+            pause(25)
+            if (Logging == 0) {
+                Chicken.destroy(effects.fountain, 100)
+                Dead = 1
+            }
+        }
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     }
-    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
 scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.rock0, function (sprite, location) {
     sprite.destroy()
@@ -321,25 +325,27 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     sprite.follow(otherSprite, 2000)
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    ChickenX += 1
-    Chicken.setVelocity(0, 0)
-    if (!(Chicken.overlapsWith(Log))) {
-        Logging = 0
-    }
-    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-    animation.setAction(Chicken, ActionKind.Right)
-    if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenX += -1
-    } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenX += -1
-    } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
-        pause(25)
-        if (Logging == 0) {
-            Chicken.destroy(effects.fountain, 100)
-            Dead = 1
+    if (Dead == 0) {
+        ChickenX += 1
+        Chicken.setVelocity(0, 0)
+        if (!(Chicken.overlapsWith(Log))) {
+            Logging = 0
         }
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+        animation.setAction(Chicken, ActionKind.Right)
+        if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
+            ChickenX += -1
+        } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
+            ChickenX += -1
+        } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
+            pause(25)
+            if (Logging == 0) {
+                Chicken.destroy(effects.fountain, 100)
+                Dead = 1
+            }
+        }
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     }
-    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 })
 scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile4, function (sprite, location) {
     sprite.destroy()
@@ -371,26 +377,28 @@ function make_road (X: number) {
     }
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    ChickenY += -1
-    Chicken.setVelocity(0, 0)
-    if (!(Chicken.overlapsWith(Log))) {
-        Logging = 0
-    }
-    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-    animation.setAction(Chicken, ActionKind.Foward)
-    if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
-        ChickenY += 1
-    } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
-        ChickenY += 1
-    } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
-        pause(25)
-        if (Logging == 0) {
-            Chicken.destroy(effects.fountain, 100)
-            Dead = 1
+    if (Dead == 0) {
+        ChickenY += -1
+        Chicken.setVelocity(0, 0)
+        if (!(Chicken.overlapsWith(Log))) {
+            Logging = 0
         }
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+        animation.setAction(Chicken, ActionKind.Foward)
+        if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
+            ChickenY += 1
+        } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
+            ChickenY += 1
+        } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile3)) {
+            pause(25)
+            if (Logging == 0) {
+                Chicken.destroy(effects.fountain, 100)
+                Dead = 1
+            }
+        }
+        tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+        Timeout = 100
     }
-    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-    Timeout = 100
 })
 scene.onOverlapTile(SpriteKind.Food, sprites.builtin.forestTiles0, function (sprite, location) {
     sprite.destroy()
