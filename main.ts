@@ -737,6 +737,9 @@ e e e e e e e e e e e e e e e e
         if (TrainTime <= 0) {
             TrainTime = 60
         }
+    } else {
+        TrainTime = 60
+        DoTrain = 0
     }
     if (ChickenY < 3) {
         ChickenY += 1
