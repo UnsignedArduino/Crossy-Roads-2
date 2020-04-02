@@ -3,7 +3,8 @@
     "dependencies": {
         "device": "*",
         "animation": "*",
-        "controller": "*"
+        "controller": "*",
+        "Color Fading": "github:jwunderl/pxt-color#v0.1.3"
     },
     "description": "",
     "files": [
