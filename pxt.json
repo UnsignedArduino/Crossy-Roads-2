@@ -1,19 +1,22 @@
 {
     "name": "Crossy Roads 2",
+    "description": "",
     "dependencies": {
         "device": "*",
         "animation": "*",
         "controller": "*",
         "Color Fading": "github:jwunderl/pxt-color#v0.1.3"
     },
-    "description": "",
     "files": [
         "main.blocks",
         "main.ts",
         "README.md"
     ],
-    "preferredEditor": "blocksprj",
     "testFiles": [
         "test.ts"
-    ]
+    ],
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "blocksprj"
 }
