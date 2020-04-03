@@ -9,6 +9,7 @@ enum ActionKind {
 }
 namespace SpriteKind {
     export const AnotherProjectile = SpriteKind.create()
+    export const Bonus = SpriteKind.create()
 }
 namespace myTiles {
     //% blockIdentity=images._tile
@@ -144,6 +145,63 @@ e e d d e e d d f 2 f d e e d d
 e e d d e e d d f f f d e e d d 
 e e e e e e e e e e e e e e e e 
 `
+    //% blockIdentity=images._tile
+    export const tile8 = img`
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 f f f f f f 7 7 7 7 7 7 
+7 7 f f f f f f f f f f 7 7 7 7 
+7 7 f 2 2 f f f f f f 2 2 f 7 7 
+7 f f 2 2 2 f f f f 2 2 2 f f 7 
+7 f f f 2 2 2 f f 2 2 2 f f f 7 
+7 f f f f 2 2 2 2 2 2 f f f f 7 
+7 f f f f f 2 2 2 2 f f f f f 7 
+7 f f f f f 2 2 2 2 f f f f f 7 
+7 f f f f 2 2 2 2 2 2 f f f f 7 
+7 f f f 2 2 2 f f 2 2 2 f f f 7 
+7 f f 2 2 2 f f f f 2 2 2 f 7 7 
+7 7 f 2 2 f f f f f f 2 2 f 7 7 
+7 7 7 f f f f f f f f f f 7 7 7 
+7 7 7 7 f f f f f f f f 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+`
+    //% blockIdentity=images._tile
+    export const tile9 = img`
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 f f f f f f f f f 7 7 7 7 
+7 7 f f f f f f f 3 3 f f f 7 7 
+7 f f f f f f f f f 3 3 f f 7 7 
+7 f f 3 3 3 3 3 3 3 3 3 3 f 7 7 
+7 f f f f f f f f f 3 3 f f f 7 
+7 f f f f f f f f 3 3 f f f f 7 
+7 f f f f 3 3 f f f f f f f f 7 
+7 f f f 3 3 f f f f f f f f f 7 
+7 f f 3 3 3 3 3 3 3 3 3 3 f f 7 
+7 f f f 3 3 f f f f f f f f f 7 
+7 7 f f f 3 3 f f f f f f f 7 7 
+7 7 f f f f f f f f f f f f 7 7 
+7 7 7 f f f f f f f f f f 7 7 7 
+7 7 7 7 7 f f f f f f f 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+`
+    //% blockIdentity=images._tile
+    export const tile10 = img`
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 f f f f 7 7 7 7 7 7 7 7 
+7 7 7 f f f f f f f f f 7 7 7 7 
+7 7 f f f c c c c c f f f 7 7 7 
+7 7 f f f c f f f c f f f f 7 7 
+7 f f f d d d d d d d f f f 7 7 
+7 f f f d d d d d d d f f f f 7 
+7 f f f d d d d d d d f f f f 7 
+7 f f f d d d d 5 5 5 5 f f f 7 
+7 f f f d d d 5 5 2 2 5 5 f f 7 
+7 f f f d d d 5 5 2 5 5 5 f f 7 
+7 f f f d d d 5 5 2 5 5 5 f 7 7 
+7 f f f d d d 5 5 2 2 5 5 f 7 7 
+7 7 f f f f f f 5 5 5 5 f f 7 7 
+7 7 7 f f f f f f f f f f 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+`
 }
 scene.onOverlapTile(SpriteKind.Food, sprites.vehicle.roadHorizontal, function (sprite, location) {
     sprite.destroy()
@@ -162,6 +220,32 @@ sprites.onCreated(SpriteKind.Projectile, function (sprite) {
 })
 scene.onOverlapTile(SpriteKind.Food, myTiles.tile6, function (sprite, location) {
     sprite.destroy()
+})
+function check_to_clear_settings () {
+    DoEagle = 0
+    if (game.ask("Are you sure you want", "to reset this device?")) {
+        pause(25)
+        if (game.ask("Are you REALLY SURE you", "want to clear everything?")) {
+            pause(25)
+            if (game.ask("Your coins, animals, and", "achievements will reset!")) {
+                pause(25)
+                if (game.ask("This is your last chance", "to back out!")) {
+                    pause(25)
+                    blockSettings.clear()
+                    game.showLongText("Cleared all settings! Rebooting NOW!", DialogLayout.Bottom)
+                    pause(25)
+                    color.FadeToBlack.startScreenEffect()
+                    color.pauseUntilFadeDone()
+                    game.reset()
+                }
+            }
+        }
+    }
+    ChickenX += -1
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+}
+sprites.onCreated(SpriteKind.Bonus, function (sprite) {
+    Projectiles.push(sprite)
 })
 scene.onOverlapTile(SpriteKind.Projectile, sprites.castle.tileGrass1, function (sprite, location) {
     sprite.destroy()
@@ -277,8 +361,17 @@ function select_tile () {
         }
     }
 }
+sprites.onDestroyed(SpriteKind.Bonus, function (sprite) {
+    Dump = Projectiles.removeAt(Projectiles.indexOf(sprite))
+    Coined = 8
+})
 scene.onOverlapTile(SpriteKind.Projectile, myTiles.tile6, function (sprite, location) {
     sprite.destroy()
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Bonus, function (sprite, otherSprite) {
+    sprite.say("+5", 100)
+    otherSprite.destroy()
+    info.changeScoreBy(5)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Projectile, function (sprite, otherSprite) {
     sprite.destroy(effects.fire, 100)
@@ -315,6 +408,10 @@ function update_tilemap () {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile6)
             } else if (Tile == 12) {
                 tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile7)
+            } else if (Tile == 13) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile8)
+            } else if (Tile == 14) {
+                tiles.setTileAt(tiles.getTileLocation(Column, Row), myTiles.tile10)
             } else {
                 control.panic(200)
             }
@@ -343,6 +440,10 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
                 Chicken.destroy(effects.fountain, 100)
                 Dead = 1
             }
+        } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile8)) {
+            tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+            pause(25)
+            check_to_clear_settings()
         }
         tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     }
@@ -431,6 +532,7 @@ function make_terrain (X: number) {
 }
 let Train: Sprite = null
 let Eagle: Sprite = null
+let Coin: Sprite = null
 let Car: Sprite = null
 let Value = 0
 let LastTile = 0
@@ -443,6 +545,8 @@ let Row = 0
 let List: number[] = []
 let Projectiles: Sprite[] = []
 let Tilemap: number[][] = []
+let Coined = 0
+let DoEagle = 0
 let Logging = 0
 let Dead = 0
 let Timeout = 0
@@ -683,12 +787,14 @@ animation.setAction(Chicken, ActionKind.Foward)
 ChickenX = 4
 ChickenY = 3
 Timeout = 100
-let DeadTimeout = 20
+let DeadTimeout = 30
 Dead = 0
 Logging = 0
 let Railroad = 0
 let TrainTime = 0
 let DoTrain = 0
+DoEagle = 0
+Coined = 8
 Tilemap = [[1]]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 for (let index = 0; index < 7; index++) {
@@ -743,7 +849,9 @@ set_tile(2, 3, 5)
 set_tile(2, 5, 6)
 make_road(1)
 make_terrain(0)
-info.setScore(0)
+set_tile(4, 7, 13)
+set_tile(4, 2, 14)
+set_tile(4, 3, 5)
 scene.setBackgroundImage(img`
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
@@ -867,7 +975,7 @@ scene.setBackgroundImage(img`
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `)
 tiles.setTilemap(tiles.createTilemap(
-            hex`0a0008000001040506070802030a090b0c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`,
+            hex`0a0008000001040506070802030a090b0c0d0e0f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`,
             img`
 . . . . . . . . . . 
 . . . . . . . . . . 
@@ -878,16 +986,22 @@ tiles.setTilemap(tiles.createTilemap(
 . . . . . . . . . . 
 . . . . . . . . . . 
 `,
-            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,sprites.castle.rock0,myTiles.tile5,sprites.vehicle.roadHorizontal,myTiles.tile6,myTiles.tile7],
+            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,sprites.castle.rock0,myTiles.tile5,sprites.vehicle.roadHorizontal,myTiles.tile6,myTiles.tile7,myTiles.tile8,myTiles.tile9,myTiles.tile10],
             TileScale.Sixteen
         ))
 update_tilemap()
 tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+if (blockSettings.exists("coins")) {
+    info.setScore(blockSettings.readNumber("coins"))
+} else {
+    blockSettings.writeNumber("coins", 0)
+}
 game.showLongText("Welcome to Crossy Roads 2!", DialogLayout.Bottom)
 game.showLongText("In this game, you will have to get as far as you can without getting abducted, ran over, or drowning.", DialogLayout.Bottom)
 game.showLongText("Use the joystick/d-pad to move your chicken around.", DialogLayout.Bottom)
 game.showLongText("Have fun!", DialogLayout.Bottom)
 Intro = 1
+DoEagle = 1
 game.onUpdateInterval(100, function () {
     if (Intro == 1) {
         if (Math.percentChance(25)) {
@@ -1002,6 +1116,9 @@ e e e e e e e e e e e e e e e e
         }
         if (ChickenY < 3) {
             ChickenY += 1
+            if (Coined > 0) {
+                Coined += -1
+            }
             tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
             Tilemap.reverse()
             Tilemap.push([1])
@@ -1046,14 +1163,103 @@ e e e e e e e e e e e e e e e e
             info.changeScoreBy(1)
             update_tilemap()
         }
+        if (Math.percentChance(1)) {
+            if (Coined == 0) {
+                Coined = 8
+                Coin = sprites.create(img`
+. . b b b b . . 
+. b 5 5 5 5 b . 
+b 5 d 3 3 d 5 b 
+b 5 3 5 5 1 5 b 
+c 5 3 5 5 1 d c 
+c d d 1 1 d d c 
+. f d d d d f . 
+. . f f f f . . 
+`, SpriteKind.Bonus)
+                Coin.setFlag(SpriteFlag.AutoDestroy, true)
+                animation.runImageAnimation(
+                Coin,
+                [img`
+. . b b b b . . 
+. b 5 5 5 5 b . 
+b 5 d 3 3 d 5 b 
+b 5 3 5 5 1 5 b 
+c 5 3 5 5 1 d c 
+c d d 1 1 d d c 
+. f d d d d f . 
+. . f f f f . . 
+`,img`
+. . b b b . . . 
+. b 5 5 5 b . . 
+b 5 d 3 d 5 b . 
+b 5 3 5 1 5 b . 
+c 5 3 5 1 d c . 
+c 5 d 1 d d c . 
+. f d d d f . . 
+. . f f f . . . 
+`,img`
+. . . b b . . . 
+. . b 5 5 b . . 
+. b 5 d 1 5 b . 
+. b 5 3 1 5 b . 
+. c 5 3 1 d c . 
+. c 5 1 d d c . 
+. . f d d f . . 
+. . . f f . . . 
+`,img`
+. . . b b . . . 
+. . b 5 5 b . . 
+. . b 1 1 b . . 
+. . b 5 5 b . . 
+. . b d d b . . 
+. . c d d c . . 
+. . c 3 3 c . . 
+. . . f f . . . 
+`,img`
+. . . b b . . . 
+. . b 5 5 b . . 
+. b 5 1 d 5 b . 
+. b 5 1 3 5 b . 
+. c d 1 3 5 c . 
+. c d d 1 5 c . 
+. . f d d f . . 
+. . . f f . . . 
+`,img`
+. . . b b b . . 
+. . b 5 5 5 b . 
+. b 5 d 3 d 5 b 
+. b 5 1 5 3 5 b 
+. c d 1 5 3 5 c 
+. c d d 1 d 5 c 
+. . f d d d f . 
+. . . f f f . . 
+`],
+                200,
+                true
+                )
+                Value = Math.randomRange(1, 5)
+                if (Value == 1) {
+                    tiles.placeOnRandomTile(Coin, myTiles.tile2)
+                } else if (Value == 2) {
+                    tiles.placeOnRandomTile(Coin, sprites.castle.tileGrass1)
+                } else if (Value == 3) {
+                    tiles.placeOnRandomTile(Coin, sprites.castle.tileGrass3)
+                } else if (Value == 4) {
+                    tiles.placeOnRandomTile(Coin, sprites.castle.tileGrass2)
+                } else {
+                    tiles.placeOnRandomTile(Coin, myTiles.tile4)
+                }
+            }
+        }
         if (Dead) {
             if (DeadTimeout > 0) {
                 DeadTimeout += -1
             } else {
+                blockSettings.writeNumber("coins", blockSettings.readNumber("coins") + (info.score() - blockSettings.readNumber("coins")))
                 game.over(false, effects.melt)
             }
         }
-        if (true) {
+        if (DoEagle == 1) {
             if (Timeout > 0) {
                 Timeout += -1
             } else {
@@ -1125,7 +1331,7 @@ f d b d d d d d d d d d d b d f
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-`, 200, 0)
+`, 150, 0)
         tiles.placeOnRandomTile(Train, myTiles.tile5)
         Train.x = 0
         Train.setKind(SpriteKind.AnotherProjectile)
