@@ -221,27 +221,13 @@ sprites.onCreated(SpriteKind.Projectile, function (sprite) {
 scene.onOverlapTile(SpriteKind.Food, myTiles.tile6, function (sprite, location) {
     sprite.destroy()
 })
-function check_to_clear_settings () {
+function animal_menu () {
     DoEagle = 0
-    if (game.ask("Are you sure you want", "to reset this device?")) {
+    if (game.ask("Do you want to head", "to the store?")) {
         pause(25)
-        if (game.ask("Are you REALLY SURE you", "want to clear everything?")) {
-            pause(25)
-            if (game.ask("Your coins, animals, and", "achievements will reset!")) {
-                pause(25)
-                if (game.ask("This is your last chance", "to back out!")) {
-                    pause(25)
-                    blockSettings.clear()
-                    game.showLongText("Cleared all settings! Rebooting NOW!", DialogLayout.Bottom)
-                    pause(25)
-                    color.FadeToBlack.startScreenEffect()
-                    color.pauseUntilFadeDone()
-                    game.reset()
-                }
-            }
-        }
     }
-    ChickenX += -1
+    ChickenY += -1
+    DoEagle = 1
     tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 }
 sprites.onCreated(SpriteKind.Bonus, function (sprite) {
@@ -295,6 +281,10 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
                 Chicken.destroy(effects.fountain, 100)
                 Dead = 1
             }
+        } else if (Chicken.tileKindAt(TileDirection.Center, myTiles.tile10)) {
+            tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
+            pause(25)
+            animal_menu()
         }
         tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
     }
@@ -329,6 +319,30 @@ function make_railroad (X: number) {
         set_tile(X, Index, 10)
     }
     set_tile(X, 2, 11)
+}
+function check_to_clear_settings () {
+    DoEagle = 0
+    if (game.ask("Are you sure you want", "to reset this device?")) {
+        pause(25)
+        if (game.ask("Are you REALLY SURE you", "want to clear everything?")) {
+            pause(25)
+            if (game.ask("Your coins, animals, and", "achievements will reset!")) {
+                pause(25)
+                if (game.ask("This is your last chance", "to back out!")) {
+                    pause(25)
+                    blockSettings.remove("coins")
+                    game.showLongText("Cleared all settings! Rebooting NOW!", DialogLayout.Bottom)
+                    pause(25)
+                    color.FadeToBlack.startScreenEffect()
+                    color.pauseUntilFadeDone()
+                    game.reset()
+                }
+            }
+        }
+    }
+    ChickenX += -1
+    DoEagle = 1
+    tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
 }
 scene.onOverlapTile(SpriteKind.Food, sprites.castle.rock0, function (sprite, location) {
     sprite.destroy()
