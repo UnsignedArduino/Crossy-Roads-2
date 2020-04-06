@@ -634,7 +634,36 @@ function animal_menu () {
         game.showLongText("Press A to use or buy an animal. You will have to have enough coins to buy the animal.", DialogLayout.Bottom)
         game.showLongText("Press B to exit the shop.", DialogLayout.Bottom)
         game.showLongText("Use the joystick/d pad to select an animal.", DialogLayout.Bottom)
+        Animal = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, SpriteKind.Player)
+        Animal.setPosition(80, 60)
         while (DoShop == 1) {
+            Animal.setImage(AnimalFront[AnimalSelect])
+            if (AnimalsBought[AnimalSelect] == 1) {
+                if (Equipped == AnimalSelect) {
+                    Animal.say("Equipped!")
+                } else {
+                    Animal.say("Unequipped!")
+                }
+            } else {
+                Animal.say("$" + AnimalPrices[AnimalSelect])
+            }
             if (controller.B.isPressed()) {
                 pause(100)
                 if (game.ask("Are you sure you want", "to exit the shop?")) {
@@ -643,6 +672,7 @@ function animal_menu () {
             }
             pause(50)
         }
+        DoShop = 1
         pause(25)
         game.showLongText("Thank you for visiting the shop. Rebooting NOW!", DialogLayout.Bottom)
         pause(25)
@@ -720,16 +750,22 @@ let Eagle: Sprite = null
 let Coin: Sprite = null
 let Car: Sprite = null
 let Value = 0
+let Animal: Sprite = null
 let LastTile = 0
 let SelectedTile = 0
 let Dump: Sprite = null
 let Log: Sprite = null
+let Equipped = 0
+let AnimalsBought: number[] = []
 let Tile = 0
 let Column = 0
 let Row = 0
 let List: number[] = []
 let Projectiles: Sprite[] = []
+let AnimalPrices: number[] = []
+let AnimalFront: Image[] = []
 let Tilemap: number[][] = []
+let AnimalSelect = 0
 let DoShop = 0
 let Coined = 0
 let DoEagle = 0
@@ -982,8 +1018,9 @@ let DoTrain = 0
 DoEagle = 0
 Coined = 8
 DoShop = 0
+AnimalSelect = 0
 Tilemap = [[1]]
-let Animals = [img`
+AnimalFront = [img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
 . . . . . 1 1 1 1 1 1 . . . . . 
@@ -1001,6 +1038,7 @@ let Animals = [img`
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . 4 4 4 4 4 4 . . . . . 
 `]
+AnimalPrices = [0]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 for (let index = 0; index < 7; index++) {
     Tilemap.push([1])
@@ -1204,7 +1242,11 @@ if (blockSettings.exists("coins")) {
 if (!(blockSettings.exists("animals_bought"))) {
     blockSettings.writeNumberArray("animals_bought", [1])
 }
-let AnimalsBought = blockSettings.readNumberArray("animals_bought")
+AnimalsBought = blockSettings.readNumberArray("animals_bought")
+if (!(blockSettings.exists("animal_equipped"))) {
+    blockSettings.writeNumber("animal_equipped", 0)
+}
+Equipped = blockSettings.readNumber("animal_equipped")
 game.showLongText("Welcome to Crossy Roads 2!", DialogLayout.Bottom)
 game.showLongText("In this game, you will have to get as far as you can without getting abducted, ran over, or drowning.", DialogLayout.Bottom)
 game.showLongText("Use the joystick/d-pad to move your chicken around.", DialogLayout.Bottom)
