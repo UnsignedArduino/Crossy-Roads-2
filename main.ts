@@ -165,25 +165,6 @@ e e e e e e e e e e e e e e e e
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
     //% blockIdentity=images._tile
-    export const tile9 = img`
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 f f f f f f f f f 7 7 7 7 
-7 7 f f f f f f f 3 3 f f f 7 7 
-7 f f f f f f f f f 3 3 f f 7 7 
-7 f f 3 3 3 3 3 3 3 3 3 3 f 7 7 
-7 f f f f f f f f f 3 3 f f f 7 
-7 f f f f f f f f 3 3 f f f f 7 
-7 f f f f 3 3 f f f f f f f f 7 
-7 f f f 3 3 f f f f f f f f f 7 
-7 f f 3 3 3 3 3 3 3 3 3 3 f f 7 
-7 f f f 3 3 f f f f f f f f f 7 
-7 7 f f f 3 3 f f f f f f f 7 7 
-7 7 f f f f f f f f f f f f 7 7 
-7 7 7 f f f f f f f f f f 7 7 7 
-7 7 7 7 7 f f f f f f f 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-`
-    //% blockIdentity=images._tile
     export const tile10 = img`
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 7 7 7 7 f f f f 7 7 7 7 7 7 7 7 
@@ -623,7 +604,7 @@ function animal_menu () {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `,
-            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,myTiles.tile5,myTiles.tile6,myTiles.tile7,myTiles.tile8,myTiles.tile9,myTiles.tile10],
+            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,myTiles.tile5,myTiles.tile6,myTiles.tile7,myTiles.tile8,myTiles.tile10],
             TileScale.Sixteen
         ))
         for (let Value of Projectiles) {
@@ -631,9 +612,6 @@ function animal_menu () {
         }
         Chicken.destroy(effects.coolRadial, 100)
         pause(500)
-        game.showLongText("Press A to use or buy an animal. You will have to have enough coins to buy the animal.", DialogLayout.Bottom)
-        game.showLongText("Press B to exit the shop.", DialogLayout.Bottom)
-        game.showLongText("Use the joystick/d pad to select an animal.", DialogLayout.Bottom)
         Animal = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -653,8 +631,11 @@ function animal_menu () {
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
         Animal.setPosition(80, 60)
+        game.showLongText("Press A to use or buy an animal. You will have to have enough coins to buy the animal.", DialogLayout.Bottom)
+        game.showLongText("Press B to exit the shop.", DialogLayout.Bottom)
+        game.showLongText("Use the joystick/d pad to select an animal.", DialogLayout.Bottom)
         while (DoShop == 1) {
-            Animal.setImage(AnimalFront[AnimalSelect])
+            Animal.setImage(AnimalBack[AnimalSelect])
             if (AnimalsBought[AnimalSelect] == 1) {
                 if (Equipped == AnimalSelect) {
                     Animal.say("Equipped!")
@@ -755,15 +736,16 @@ let LastTile = 0
 let SelectedTile = 0
 let Dump: Sprite = null
 let Log: Sprite = null
-let Equipped = 0
-let AnimalsBought: number[] = []
 let Tile = 0
 let Column = 0
 let Row = 0
 let List: number[] = []
+let Chicken: Sprite = null
+let Equipped = 0
+let AnimalsBought: number[] = []
 let Projectiles: Sprite[] = []
 let AnimalPrices: number[] = []
-let AnimalFront: Image[] = []
+let AnimalBack: Image[] = []
 let Tilemap: number[][] = []
 let AnimalSelect = 0
 let DoShop = 0
@@ -774,7 +756,6 @@ let Dead = 0
 let Timeout = 0
 let ChickenY = 0
 let ChickenX = 0
-let Chicken: Sprite = null
 let Intro = 1
 scene.setBackgroundImage(img`
 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
@@ -902,7 +883,110 @@ pause(500)
 color.FadeToBlack.startScreenEffect()
 color.pauseUntilFadeDone()
 pause(500)
-color.clearFadeEffect()
+ChickenX = 4
+ChickenY = 3
+Timeout = 100
+let DeadTimeout = 30
+Dead = 0
+Logging = 0
+let Railroad = 0
+let TrainTime = 0
+let DoTrain = 0
+DoEagle = 0
+Coined = 8
+DoShop = 0
+AnimalSelect = 0
+Tilemap = [[1]]
+let AnimalFront = [img`
+. . . . . . . 2 2 . . . . . . . 
+. . . . . 1 1 2 2 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . d 1 1 1 1 1 1 d . . . . 
+. . . . d 1 d d d d 1 d . . . . 
+. . . . d 1 d d d d 1 d . . . . 
+. . . . d 1 d d d d 1 d . . . . 
+. . . . . 1 d d d d 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . 4 4 4 4 4 4 . . . . . 
+`]
+AnimalBack = [img`
+. . . . . . . 2 2 . . . . . . . 
+. . . . . 1 1 2 2 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 f 1 1 f 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 4 4 1 1 . . . . . 
+. . . . d 1 1 4 4 1 1 d . . . . 
+. . . . d 1 1 1 1 1 1 d . . . . 
+. . . . d 1 1 1 1 1 1 d . . . . 
+. . . . d 1 1 1 1 1 1 d . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . . 4 . . 4 . . . . . . 
+. . . . . 4 4 4 4 4 4 . . . . . 
+`]
+let AnimalLeft = [img`
+. . . . . . . . . . . . . . . . 
+. . . . 2 2 . . . . . . . . . . 
+. . . 1 1 1 1 1 . . . . . . . . 
+. . . 1 1 1 1 1 . . . . . . . . 
+. . 4 1 1 1 1 1 . . . . . . . . 
+. . 4 1 1 1 1 1 . . . . . . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 1 d d d d d d 1 d . . 
+. . . 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . 4 4 4 . . . . . 
+`]
+let AnimalRight = [img`
+. . . . . . . . . . . . . . . . 
+. . . . 2 2 . . . . . . . . . . 
+. . . 1 1 1 1 1 . . . . . . . . 
+. . . 1 1 1 1 1 . . . . . . . . 
+. . 4 1 1 1 1 1 . . . . . . . . 
+. . 4 1 1 1 1 1 . . . . . . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 d d d d d d d 1 d . . 
+. . . 1 1 1 d d d d d d 1 d . . 
+. . . 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . . 4 . . . . . . 
+. . . . . . . . 4 4 4 . . . . . 
+`]
+for (let Value of AnimalRight) {
+    Value.flipX()
+}
+AnimalPrices = [0]
+Projectiles = sprites.allOfKind(SpriteKind.Projectile)
+if (blockSettings.exists("coins")) {
+    info.setScore(blockSettings.readNumber("coins"))
+} else {
+    blockSettings.writeNumber("coins", 0)
+}
+if (!(blockSettings.exists("animals_bought"))) {
+    blockSettings.writeNumberArray("animals_bought", [1])
+}
+AnimalsBought = blockSettings.readNumberArray("animals_bought")
+if (!(blockSettings.exists("animal_equipped"))) {
+    blockSettings.writeNumber("animal_equipped", 0)
+}
+Equipped = blockSettings.readNumber("animal_equipped")
 Chicken = sprites.create(img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
@@ -924,122 +1008,18 @@ Chicken = sprites.create(img`
 Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
 let ChickenFowardAnim = animation.createAnimation(ActionKind.Foward, 100)
-ChickenFowardAnim.addAnimationFrame(img`
-. . . . . . . 2 2 . . . . . . . 
-. . . . . 1 1 2 2 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . . 1 d d d d 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . 4 4 4 4 4 4 . . . . . 
-`)
+ChickenFowardAnim.addAnimationFrame(AnimalFront[Equipped])
 animation.attachAnimation(Chicken, ChickenFowardAnim)
 let ChickenBackwardAnim = animation.createAnimation(ActionKind.Backward, 100)
-ChickenBackwardAnim.addAnimationFrame(img`
-. . . . . . . 2 2 . . . . . . . 
-. . . . . 1 1 2 2 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 f 1 1 f 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 4 4 1 1 . . . . . 
-. . . . d 1 1 4 4 1 1 d . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . 4 4 4 4 4 4 . . . . . 
-`)
+ChickenBackwardAnim.addAnimationFrame(AnimalBack[Equipped])
 animation.attachAnimation(Chicken, ChickenBackwardAnim)
 let ChickenLeftAnim = animation.createAnimation(ActionKind.Left, 100)
-ChickenLeftAnim.addAnimationFrame(img`
-. . . . . . . . . . . . . . . . 
-. . . . 2 2 . . . . . . . . . . 
-. . . 1 1 1 1 1 . . . . . . . . 
-. . . 1 1 1 1 1 . . . . . . . . 
-. . 4 1 1 1 1 1 . . . . . . . . 
-. . 4 1 1 1 1 1 . . . . . . . . 
-. . . 1 1 1 1 1 1 1 1 1 1 . . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 1 d d d d d d 1 d . . 
-. . . 1 1 1 1 1 1 1 1 1 1 . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . 4 4 4 . . . . . 
-`)
+ChickenLeftAnim.addAnimationFrame(AnimalLeft[Equipped])
 animation.attachAnimation(Chicken, ChickenLeftAnim)
 let ChickenRightAnim = animation.createAnimation(ActionKind.Right, 100)
-let LeftFlipped = img`
-. . . . . . . . . . . . . . . . 
-. . . . 2 2 . . . . . . . . . . 
-. . . 1 1 1 1 1 . . . . . . . . 
-. . . 1 1 1 1 1 . . . . . . . . 
-. . 4 1 1 1 1 1 . . . . . . . . 
-. . 4 1 1 1 1 1 . . . . . . . . 
-. . . 1 1 1 1 1 1 1 1 1 1 . . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 d d d d d d d 1 d . . 
-. . . 1 1 1 d d d d d d 1 d . . 
-. . . 1 1 1 1 1 1 1 1 1 1 . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . . 4 . . . . . . 
-. . . . . . . . 4 4 4 . . . . . 
-`
-LeftFlipped.flipX()
-ChickenRightAnim.addAnimationFrame(LeftFlipped)
+ChickenRightAnim.addAnimationFrame(AnimalRight[Equipped])
 animation.attachAnimation(Chicken, ChickenRightAnim)
 animation.setAction(Chicken, ActionKind.Foward)
-ChickenX = 4
-ChickenY = 3
-Timeout = 100
-let DeadTimeout = 30
-Dead = 0
-Logging = 0
-let Railroad = 0
-let TrainTime = 0
-let DoTrain = 0
-DoEagle = 0
-Coined = 8
-DoShop = 0
-AnimalSelect = 0
-Tilemap = [[1]]
-AnimalFront = [img`
-. . . . . . . 2 2 . . . . . . . 
-. . . . . 1 1 2 2 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 f 1 1 f 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 4 4 1 1 . . . . . 
-. . . . d 1 1 4 4 1 1 d . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . 4 4 4 4 4 4 . . . . . 
-`]
-AnimalPrices = [0]
-Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 for (let index = 0; index < 7; index++) {
     Tilemap.push([1])
 }
@@ -1218,7 +1198,7 @@ scene.setBackgroundImage(img`
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `)
 tiles.setTilemap(tiles.createTilemap(
-            hex`0a0008000001040506070802030a090b0c0d0e0f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`,
+            hex`0a0008000001040506070802030a090b0c0d0e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000`,
             img`
 . . . . . . . . . . 
 . . . . . . . . . . 
@@ -1229,24 +1209,13 @@ tiles.setTilemap(tiles.createTilemap(
 . . . . . . . . . . 
 . . . . . . . . . . 
 `,
-            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,sprites.castle.rock0,myTiles.tile5,sprites.vehicle.roadHorizontal,myTiles.tile6,myTiles.tile7,myTiles.tile8,myTiles.tile9,myTiles.tile10],
+            [myTiles.tile0,myTiles.tile2,myTiles.tile3,myTiles.tile4,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,sprites.castle.rock0,myTiles.tile5,sprites.vehicle.roadHorizontal,myTiles.tile6,myTiles.tile7,myTiles.tile8,myTiles.tile10],
             TileScale.Sixteen
         ))
 update_tilemap()
 tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-if (blockSettings.exists("coins")) {
-    info.setScore(blockSettings.readNumber("coins"))
-} else {
-    blockSettings.writeNumber("coins", 0)
-}
-if (!(blockSettings.exists("animals_bought"))) {
-    blockSettings.writeNumberArray("animals_bought", [1])
-}
-AnimalsBought = blockSettings.readNumberArray("animals_bought")
-if (!(blockSettings.exists("animal_equipped"))) {
-    blockSettings.writeNumber("animal_equipped", 0)
-}
-Equipped = blockSettings.readNumber("animal_equipped")
+color.clearFadeEffect()
+pause(25)
 game.showLongText("Welcome to Crossy Roads 2!", DialogLayout.Bottom)
 game.showLongText("In this game, you will have to get as far as you can without getting abducted, ran over, or drowning.", DialogLayout.Bottom)
 game.showLongText("Use the joystick/d-pad to move your chicken around.", DialogLayout.Bottom)
