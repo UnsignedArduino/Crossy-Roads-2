@@ -634,6 +634,7 @@ function animal_menu () {
         game.showLongText("Press A to use or buy an animal. You will have to have enough coins to buy the animal.", DialogLayout.Bottom)
         game.showLongText("Press B to exit the shop.", DialogLayout.Bottom)
         game.showLongText("Use the joystick/d pad to select an animal.", DialogLayout.Bottom)
+        pause(100)
         while (DoShop == 1) {
             Animal.setImage(AnimalBack[AnimalSelect])
             if (AnimalsBought[AnimalSelect] == 1) {
@@ -649,6 +650,7 @@ function animal_menu () {
                 pause(50)
                 if (game.ask("Are you sure you want", "to exit the shop?")) {
                     DoShop = 0
+                    pause(50)
                 }
             }
             if (controller.A.isPressed()) {
@@ -673,10 +675,20 @@ function animal_menu () {
                     }
                 }
             }
-            pause(50)
+            if (controller.left.isPressed() && AnimalSelect > 0) {
+                pause(50)
+                AnimalSelect += -1
+            }
+            if (controller.right.isPressed() && AnimalSelect < AnimalsBought.length) {
+                pause(50)
+                AnimalSelect += 1
+            }
+            pause(100)
         }
         DoShop = 1
         blockSettings.writeNumber("animal_equipped", AnimalSelect)
+        blockSettings.writeNumber("coins", info.score())
+        blockSettings.writeNumberArray("animals_bought", AnimalsBought)
         pause(25)
         game.showLongText("Thank you for visiting the shop. Rebooting NOW!", DialogLayout.Bottom)
         pause(25)
