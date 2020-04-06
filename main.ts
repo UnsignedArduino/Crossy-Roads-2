@@ -914,7 +914,7 @@ let AnimalFront = [img`
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . 4 4 4 4 4 4 . . . . . 
-`]
+`, sprites.vehicle.carRedBack]
 AnimalBack = [img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
@@ -932,7 +932,7 @@ AnimalBack = [img`
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . 4 4 4 4 4 4 . . . . . 
-`]
+`, sprites.vehicle.carRedFront]
 let AnimalLeft = [img`
 . . . . . . . . . . . . . . . . 
 . . . . 2 2 . . . . . . . . . . 
@@ -950,7 +950,7 @@ let AnimalLeft = [img`
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . 4 4 4 . . . . . 
-`]
+`, sprites.vehicle.carRedLeft]
 let AnimalRight = [img`
 . . . . . . . . . . . . . . . . 
 . . . . 2 2 . . . . . . . . . . 
@@ -968,7 +968,7 @@ let AnimalRight = [img`
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . 4 4 4 . . . . . 
-`]
+`, sprites.vehicle.carRedLeft]
 for (let Value of AnimalRight) {
     Value.flipX()
 }
