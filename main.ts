@@ -646,14 +646,37 @@ function animal_menu () {
                 Animal.say("$" + AnimalPrices[AnimalSelect])
             }
             if (controller.B.isPressed()) {
-                pause(100)
+                pause(50)
                 if (game.ask("Are you sure you want", "to exit the shop?")) {
                     DoShop = 0
+                }
+            }
+            if (controller.A.isPressed()) {
+                pause(50)
+                if (AnimalsBought[AnimalSelect] == 1) {
+                    if (Equipped == AnimalSelect) {
+                        game.showLongText("You are already using this animal!", DialogLayout.Bottom)
+                    } else {
+                        if (game.ask("Are you sure you want", "to equip this animal?")) {
+                            Equipped = AnimalSelect
+                        }
+                    }
+                } else {
+                    if (game.ask("Are you sure you want", "to buy this animal?")) {
+                        if (info.score() >= AnimalPrices[AnimalSelect]) {
+                            AnimalsBought[AnimalSelect] = 1
+                            info.changeScoreBy(-1 * AnimalPrices[AnimalSelect])
+                            game.showLongText("Successfully bought animal!", DialogLayout.Bottom)
+                        } else {
+                            game.showLongText("You don't have enough money for this animal!", DialogLayout.Bottom)
+                        }
+                    }
                 }
             }
             pause(50)
         }
         DoShop = 1
+        blockSettings.writeNumber("animal_equipped", AnimalSelect)
         pause(25)
         game.showLongText("Thank you for visiting the shop. Rebooting NOW!", DialogLayout.Bottom)
         pause(25)
@@ -972,7 +995,7 @@ let AnimalRight = [img`
 for (let Value of AnimalRight) {
     Value.flipX()
 }
-AnimalPrices = [0]
+AnimalPrices = [0, 20]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 if (blockSettings.exists("coins")) {
     info.setScore(blockSettings.readNumber("coins"))
@@ -980,7 +1003,7 @@ if (blockSettings.exists("coins")) {
     blockSettings.writeNumber("coins", 0)
 }
 if (!(blockSettings.exists("animals_bought"))) {
-    blockSettings.writeNumberArray("animals_bought", [1])
+    blockSettings.writeNumberArray("animals_bought", [1, 0])
 }
 AnimalsBought = blockSettings.readNumberArray("animals_bought")
 if (!(blockSettings.exists("animal_equipped"))) {
