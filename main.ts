@@ -218,8 +218,8 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
         if (!(Chicken.overlapsWith(Log))) {
             Logging = 0
         }
+        Chicken.setImage(AnimalLeft[Equipped])
         tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-        animation.setAction(Chicken, ActionKind.Left)
         if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
             ChickenX += 1
         } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
@@ -241,8 +241,8 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         if (!(Chicken.overlapsWith(Log))) {
             Logging = 0
         }
+        Chicken.setImage(AnimalBack[Equipped])
         tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-        animation.setAction(Chicken, ActionKind.Backward)
         if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
             ChickenY += -1
         } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
@@ -418,8 +418,8 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         if (!(Chicken.overlapsWith(Log))) {
             Logging = 0
         }
+        Chicken.setImage(AnimalRight[Equipped])
         tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-        animation.setAction(Chicken, ActionKind.Right)
         if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
             ChickenX += -1
         } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
@@ -648,13 +648,6 @@ function animal_menu () {
             } else {
                 Animal.say("$" + AnimalPrices[AnimalSelect])
             }
-            if (controller.B.isPressed()) {
-                pause(50)
-                if (game.ask("Are you sure you want", "to exit the shop?")) {
-                    DoShop = 0
-                    pause(50)
-                }
-            }
             if (controller.A.isPressed()) {
                 pause(50)
                 if (AnimalsBought[AnimalSelect] == 1) {
@@ -675,6 +668,13 @@ function animal_menu () {
                             game.showLongText("You don't have enough money for this animal!", DialogLayout.Bottom)
                         }
                     }
+                }
+            }
+            if (controller.B.isPressed()) {
+                pause(50)
+                if (game.ask("Are you sure you want", "to exit the shop?")) {
+                    DoShop = 0
+                    pause(50)
                 }
             }
             if (controller.left.isPressed() && AnimalSelect > 0) {
@@ -717,8 +717,8 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         if (!(Chicken.overlapsWith(Log))) {
             Logging = 0
         }
+        Chicken.setImage(AnimalFront[Equipped])
         tiles.placeOnTile(Chicken, tiles.getTileLocation(ChickenX, ChickenY))
-        animation.setAction(Chicken, ActionKind.Foward)
         if (Chicken.tileKindAt(TileDirection.Center, sprites.builtin.forestTiles0)) {
             ChickenY += 1
         } else if (Chicken.tileKindAt(TileDirection.Center, sprites.castle.rock0)) {
@@ -782,7 +782,10 @@ let Equipped = 0
 let AnimalsBought: number[] = []
 let Projectiles: Sprite[] = []
 let AnimalPrices: number[] = []
+let AnimalRight: Image[] = []
+let AnimalLeft: Image[] = []
 let AnimalBack: Image[] = []
+let AnimalFront: Image[] = []
 let Tilemap: number[][] = []
 let AnimalSelect = 0
 let DoShop = 0
@@ -918,8 +921,6 @@ scene.setBackgroundImage(img`
 `)
 pause(500)
 color.FadeToBlack.startScreenEffect()
-color.pauseUntilFadeDone()
-pause(500)
 ChickenX = 4
 ChickenY = 3
 Timeout = 100
@@ -934,7 +935,7 @@ Coined = 8
 DoShop = 0
 AnimalSelect = 0
 Tilemap = [[1]]
-let AnimalFront = [img`
+AnimalFront = [img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
 . . . . . 1 1 1 1 1 1 . . . . . 
@@ -951,7 +952,7 @@ let AnimalFront = [img`
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . 4 4 4 4 4 4 . . . . . 
-`, sprites.vehicle.carRedBack]
+`, sprites.vehicle.carRedBack, sprites.vehicle.carBlueBack]
 AnimalBack = [img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
@@ -969,8 +970,8 @@ AnimalBack = [img`
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . 4 4 4 4 4 4 . . . . . 
-`, sprites.vehicle.carRedFront]
-let AnimalLeft = [img`
+`, sprites.vehicle.carRedFront, sprites.vehicle.carBlueFront]
+AnimalLeft = [img`
 . . . . . . . . . . . . . . . . 
 . . . . 2 2 . . . . . . . . . . 
 . . . 1 1 1 1 1 . . . . . . . . 
@@ -987,8 +988,8 @@ let AnimalLeft = [img`
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . 4 4 4 . . . . . 
-`, sprites.vehicle.carRedLeft]
-let AnimalRight = [img`
+`, sprites.vehicle.carRedLeft, sprites.vehicle.carBlueLeft]
+AnimalRight = [img`
 . . . . . . . . . . . . . . . . 
 . . . . 2 2 . . . . . . . . . . 
 . . . 1 1 1 1 1 . . . . . . . . 
@@ -1005,11 +1006,11 @@ let AnimalRight = [img`
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . 4 4 4 . . . . . 
-`, sprites.vehicle.carRedLeft]
+`, sprites.vehicle.carRedLeft, sprites.vehicle.carBlueLeft]
 for (let Value of AnimalRight) {
     Value.flipX()
 }
-AnimalPrices = [0, 20]
+AnimalPrices = [0, 20, 20]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 if (blockSettings.exists("coins")) {
     info.setScore(blockSettings.readNumber("coins"))
@@ -1017,46 +1018,18 @@ if (blockSettings.exists("coins")) {
     blockSettings.writeNumber("coins", 0)
 }
 if (!(blockSettings.exists("animals_bought"))) {
-    blockSettings.writeNumberArray("animals_bought", [1, 0])
+    blockSettings.writeNumberArray("animals_bought", [1, 0, 0])
 }
 AnimalsBought = blockSettings.readNumberArray("animals_bought")
 if (!(blockSettings.exists("animal_equipped"))) {
     blockSettings.writeNumber("animal_equipped", 0)
 }
 Equipped = blockSettings.readNumber("animal_equipped")
-Chicken = sprites.create(img`
-. . . . . . . 2 2 . . . . . . . 
-. . . . . 1 1 2 2 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . d 1 1 1 1 1 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . d 1 d d d d 1 d . . . . 
-. . . . . 1 d d d d 1 . . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . . 4 . . 4 . . . . . . 
-. . . . . 4 4 4 4 4 4 . . . . . 
-`, SpriteKind.Player)
+color.pauseUntilFadeDone()
+pause(500)
+Chicken = sprites.create(AnimalFront[Equipped], SpriteKind.Player)
 Chicken.setFlag(SpriteFlag.StayInScreen, true)
 Chicken.setFlag(SpriteFlag.ShowPhysics, false)
-let ChickenFowardAnim = animation.createAnimation(ActionKind.Foward, 100)
-ChickenFowardAnim.addAnimationFrame(AnimalFront[Equipped])
-animation.attachAnimation(Chicken, ChickenFowardAnim)
-let ChickenBackwardAnim = animation.createAnimation(ActionKind.Backward, 100)
-ChickenBackwardAnim.addAnimationFrame(AnimalBack[Equipped])
-animation.attachAnimation(Chicken, ChickenBackwardAnim)
-let ChickenLeftAnim = animation.createAnimation(ActionKind.Left, 100)
-ChickenLeftAnim.addAnimationFrame(AnimalLeft[Equipped])
-animation.attachAnimation(Chicken, ChickenLeftAnim)
-let ChickenRightAnim = animation.createAnimation(ActionKind.Right, 100)
-ChickenRightAnim.addAnimationFrame(AnimalRight[Equipped])
-animation.attachAnimation(Chicken, ChickenRightAnim)
-animation.setAction(Chicken, ActionKind.Foward)
 for (let index = 0; index < 7; index++) {
     Tilemap.push([1])
 }
