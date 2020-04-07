@@ -679,7 +679,7 @@ function animal_menu () {
                 pause(50)
                 AnimalSelect += -1
             }
-            if (controller.right.isPressed() && AnimalSelect < AnimalsBought.length) {
+            if (controller.right.isPressed() && AnimalSelect < AnimalsBought.length - 1) {
                 pause(50)
                 AnimalSelect += 1
             }
