@@ -952,7 +952,7 @@ AnimalFront = [img`
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . 4 4 4 4 4 4 . . . . . 
-`, sprites.vehicle.carRedBack, sprites.vehicle.carBlueBack]
+`, sprites.vehicle.carRedBack, sprites.vehicle.carBlueBack, sprites.vehicle.carPinkBack]
 AnimalBack = [img`
 . . . . . . . 2 2 . . . . . . . 
 . . . . . 1 1 2 2 1 1 . . . . . 
@@ -970,7 +970,7 @@ AnimalBack = [img`
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . . 4 . . 4 . . . . . . 
 . . . . . 4 4 4 4 4 4 . . . . . 
-`, sprites.vehicle.carRedFront, sprites.vehicle.carBlueFront]
+`, sprites.vehicle.carRedFront, sprites.vehicle.carBlueFront, sprites.vehicle.carPinkFront]
 AnimalLeft = [img`
 . . . . . . . . . . . . . . . . 
 . . . . 2 2 . . . . . . . . . . 
@@ -988,7 +988,7 @@ AnimalLeft = [img`
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . 4 4 4 . . . . . 
-`, sprites.vehicle.carRedLeft, sprites.vehicle.carBlueLeft]
+`, sprites.vehicle.carRedLeft, sprites.vehicle.carBlueLeft, sprites.vehicle.carPinkLeft]
 AnimalRight = [img`
 . . . . . . . . . . . . . . . . 
 . . . . 2 2 . . . . . . . . . . 
@@ -1006,11 +1006,9 @@ AnimalRight = [img`
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . . 4 . . . . . . 
 . . . . . . . . 4 4 4 . . . . . 
-`, sprites.vehicle.carRedLeft, sprites.vehicle.carBlueLeft]
-for (let Value of AnimalRight) {
-    Value.flipX()
-}
-AnimalPrices = [0, 20, 20]
+`, sprites.vehicle.carRedRight, sprites.vehicle.carBlueRight, sprites.vehicle.carPinkRight]
+AnimalRight[0].flipX()
+AnimalPrices = [0, 20, 20, 20]
 Projectiles = sprites.allOfKind(SpriteKind.Projectile)
 if (blockSettings.exists("coins")) {
     info.setScore(blockSettings.readNumber("coins"))
@@ -1018,7 +1016,7 @@ if (blockSettings.exists("coins")) {
     blockSettings.writeNumber("coins", 0)
 }
 if (!(blockSettings.exists("animals_bought"))) {
-    blockSettings.writeNumberArray("animals_bought", [1, 0, 0])
+    blockSettings.writeNumberArray("animals_bought", [1, 0, 0, 0])
 }
 AnimalsBought = blockSettings.readNumberArray("animals_bought")
 if (!(blockSettings.exists("animal_equipped"))) {
