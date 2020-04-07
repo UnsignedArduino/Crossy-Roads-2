@@ -305,6 +305,8 @@ function check_to_clear_settings () {
                 if (game.ask("This is your last chance", "to back out!")) {
                     pause(25)
                     blockSettings.remove("coins")
+                    blockSettings.remove("animals_bought")
+                    blockSettings.remove("animal_equipped")
                     game.showLongText("Cleared all settings! Rebooting NOW!", DialogLayout.Bottom)
                     pause(25)
                     color.FadeToBlack.startScreenEffect()
